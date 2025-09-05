@@ -1,0 +1,24 @@
+a{
+    font-palette: #000;
+}
+
+.gl {
+  height: 5px;
+  width: 40%;
+  background-image: linear-gradient(to right, #3397C8, #47AAA4, #75D752);
+  margin: 0 auto;
+  margin-top: 20%;
+}
+
+header{
+    text-align: center;
+}
+
+.lb{
+    height: 200px;
+    width: 200px;
+    background-color: #97FF71;
+    opacity: 56%;
+    border: hidden;
+    border-radius: 15%;
+}

@@ -7,4 +7,6 @@ app = Flask(__name__)
 
 @app.route('/', methods=["GET"])
 def landing_page():
-    return "Home Page"
+    return render_template("landing.html", name="Yeron")
+
+app.run(debug=True)
