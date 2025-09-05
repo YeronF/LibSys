@@ -2,7 +2,7 @@
 {% block content %}
   <div class="gl"></div>
   <div class="bg">
-    <button class="lb"><img src="{{ url_for('static', filename='images/librarian.jpg') }}" class="l" style="opacity: 100%;">Librarian</button>
-    <button class="ub"><img src="{{ url_for('static', filename='images/user.png') }}" class="u" style="opacity: 100%;">User</button>
+    <button class="lb" href="librarian/login.html"><img src="{{ url_for('static', filename='images/librarian.jpg') }}" class="l">Librarian</button>
+    <button class="ub" href="student/Ulogin.html"><img src="{{ url_for('static', filename='images/user.png') }}" class="u">User</button>
   </div>
 {% endblock %}
