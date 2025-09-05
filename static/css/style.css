@@ -62,3 +62,70 @@ header{
     justify-content: center;
     gap: 200px;
 }
+
+.b{
+    background: #E4FFC5;
+    opacity: 96%;
+}
+
+.sllb {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 430px;
+    width: 450px;
+    background: #fff;
+    border-radius: 10px;
+    margin: 5% auto;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.h {
+    font-size: 2rem;
+    color: #3E5C3A;
+    margin-top: -5;
+    letter-spacing: 1px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.sllb h4 {
+    color: #3E5C3A;
+    font-weight: 400;
+}
+
+.sllb form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.sllb .i {
+    width: 85%;
+    padding: 12px 15px;
+    border: 1.5px solid #47AAA4;
+    border-radius: 8px;
+    margin-bottom: 25px;
+    font-size: 1rem;
+    background: #f8fafd;
+    transition: border 0.2s;
+    text-align: center;
+}
+
+.sllb .i:focus {
+    border: 2px solid #3397C8;
+    outline: none;
+    background: #e6f7ff;
+}
+
+.sllb .sb {
+    width: 70%;
+    padding: 12px 0;
+    background: linear-gradient(90deg, #47AAA4 0%, #3397C8 100%);
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
