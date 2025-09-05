@@ -7,7 +7,8 @@ a{
   width: 40%;
   background-image: linear-gradient(to right, #3397C8, #47AAA4, #75D752);
   margin: 0 auto;
-  margin-top: 20%;
+  margin-top: 10%;
+  margin-bottom: 5%;
 }
 
 header{
@@ -15,10 +16,28 @@ header{
 }
 
 .lb{
-    height: 200px;
-    width: 200px;
+    height: 180px;
+    width: 250px;
     background-color: #97FF71;
     opacity: 56%;
     border: hidden;
-    border-radius: 15%;
+    border-radius: 12.5%;
+}
+
+.ub{
+    height: 180px;
+    width: 250px;
+    background-color: #73D1FF;
+    opacity: 56%;
+    border: hidden;
+    border-radius: 12.5%;
+}
+
+.bg{
+    display: flex;
+    gap: 20%;
+    margin: 0 auto;
+    justify-content: center;
+    margin-top: 8%;
+    margin-bottom: 2%;
 }

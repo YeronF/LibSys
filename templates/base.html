@@ -6,10 +6,9 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
   </head>
   <body>
-    <header><h1>LibSys</h1></header>
+    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="LibSys Logo" class="logo", height="30%", width="30%", style="margin: 0 auto; display: block;">
     <main>
       {% block content %}{% endblock %}
     </main>
-    <footer><small>&copy; A Library Management System Developed By <a href="https://ethronics.com">Ethronics</a></small></footer>
   </body>
 </html>

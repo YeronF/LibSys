@@ -1,12 +1,9 @@
 from flask import Flask, render_template
 
-
 app = Flask(__name__)
-
-
 
 @app.route('/', methods=["GET"])
 def landing_page():
-    return render_template("landing.html", name="Yeron")
+    return render_template("landing.html")
 
 app.run(debug=True)
