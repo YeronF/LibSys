@@ -118,3 +118,8 @@ header{
         transition: background 0.2s, transform 0.2s;
         margin-top: 100px;
     }
+.ll{
+    text-decoration: none;
+    color: black;
+}
+
