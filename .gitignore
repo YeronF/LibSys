@@ -1,1 +1,4 @@
 secrete.key
+test_models.py
+__pycache__/*
+data/*

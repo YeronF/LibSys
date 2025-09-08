@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="sllb2">
+        <h2 class="h2"><strong>User Login</strong></h2>
+        <h4 style="color: #4A7FAD;">Welcome back! Please Enter your Name</h4>
+        <form action="{{ url_for('user') }}" method="POST"></form>
+            <input type="text" name="user_id" placeholder="user_id" class="i" required>
+            <input type="password" name="password" placeholder="password" class="i2" required>
+            <input type="submit" value="Login" class="sb2">
+        </form>
+    </div>
+{% endblock %}
