@@ -63,63 +63,89 @@ header{
     gap: 200px;
 }
 
-.b{
-        background-color: #E4FFC5;
-        opacity: 96%;
-    }
-
-    .sllb {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: flex-start; /* text at top */
-        height: 430px;
-        margin: 3% auto;
-        width: 450px;
-        padding: 20px;
-        background: white;
-        border-radius: 10px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-    .sllb form {
-        margin-top: auto;
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .sllb .h {
-        font-family: 'Arial', sans-serif;
-        color: #3E5C3A;
-        margin-bottom: 10px;
-    }
-
-    .sllb .i {
-        width: 80%;
-        padding: 10px;
-        margin: 10px 0;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        font-size: 16px;
-        margin-bottom: 20px;
-    }
-
-    .sllb .sb {
-        width: 50%;
-        padding: 10px;
-        background: linear-gradient(90deg, #568B4F 0%, #96ff88 100%);
-        color: white;
-        font-size: 16px;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        box-shadow: 0 2px 8px rgba(51, 151, 200, 0.10);
-        transition: background 0.2s, transform 0.2s;
-        margin-top: 100px;
-    }
-.ll{
-    text-decoration: none;
-    color: black;
+body.b {
+    background-color: #E4FFC5;
+    opacity: 96%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
 }
+
+body.b2 {
+    background-color: #C5E4FF;
+    opacity: 96%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+}
+
+
+.sllb, .sllb2 {
+    width: 450px;
+    height: 430px;
+    max-width: 95vw;
+    min-width: 260px;
+    min-height: 350px;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 40px 30px;
+    box-sizing: border-box;
+    margin: 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.sllb h2, .sllb2 .h2 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    text-align: center;
+    width: 100%;
+}
+
+.sllb h4, .sllb2 h4 {
+    margin-top: 0;
+    margin-bottom: 24px;
+    text-align: center;
+    width: 100%;
+}
+
+.sllb form, .sllb2 form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1 1 auto;
+    width: 100%;
+    justify-content: center;
+    position: relative;
+}
+
+.sllb .i, .sllb2 .i2 {
+    width: 100%;
+    font-size: 1rem;
+    margin-bottom: 10rem;
+    margin-top: auto;
+}
+
+.sllb .sb, .sllb2 .sb2 {
+    width: 100%;
+    font-size: 1.1rem;
+    margin-top: auto;
+    padding: 12px;
+    align-self: flex-end;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+/*Librarian Dashboard*/
 
