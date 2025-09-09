@@ -7,7 +7,7 @@ user_json_path = os.path.join(DATA_DIR, 'users.json')
 book_json_path = os.path.join(DATA_DIR, 'books.json')
 rental_json_path = os.path.join(DATA_DIR, 'rentals.json')
 
-if os.path.exists(DATA_DIR):
+if not os.path.exists(DATA_DIR):
     os.mkdir(DATA_DIR)
 
 
@@ -36,7 +36,7 @@ class User:
     
     @staticmethod
     def get(user_id):
-        users = _read_json(user_json_path)
+        users = User.all()
         for user in users:
             if user.get('user_id') == user_id:
                 return user
@@ -44,7 +44,7 @@ class User:
 
     @staticmethod
     def add(data):
-        users = _read_json(user_json_path)
+        users = User.all()
         users.append(data)
         _write_json(user_json_path, users)
 
@@ -77,16 +77,30 @@ class Rentals:
         return _read_json(rental_json_path)
     
     @staticmethod
-    def get(date):
-        rentals = _read_json(rental_json_path)
-        for dates in rentals:
-            if dates.get('date') == date:
-                return rentals
-        return None
+    def get_by_user_id(user_id):
+        rentals = Rentals.all() 
+        user_rentals = [rental for rental in rentals if rental.get('user_id') == user_id]
+        return user_rentals if user_rentals else None
+
+    @staticmethod
+    def get_by_book_id(book_id):
+        rentals = Rentals.all()
+        book_rentals = [rental for rental in rentals if rental.get('book_id') == book_id]
+        return book_rentals if book_rentals else None
+
+    @staticmethod
+    def update_rental_status(book_id, user_id, return_status):
+        rentals = Rentals.all()
+        for rental in rentals:
+            if rental.get('book_id') == book_id and rental.get('user_id') == user_id:
+                rental['return status'] = return_status
+                _write_json(rental_json_path, rentals)
+                return True
+        return False
 
     @staticmethod
     def add(data):
-        rentals = _read_json(rental_json_path)
+        rentals = Rentals.all()
         rentals.append(data)
         _write_json(rental_json_path, rentals)
     
