@@ -9,7 +9,16 @@ def landing_page():
 
 @app.route('/librarian', methods=["GET", "POST"])
 def librarian():
-    return render_template("librarian/login.html")
+    if request.method == "POST":
+        user_id = request.form.get('user_id')
+        password = request.form.get('password')
+        user = User.get(user_id)
+        if user and user.get('password') == password and user.get('role') == 'Teacher':
+            return render_template("librarian/dashboard.html", name=user.get('name'))
+        return f"Invalid credentials"
+    else:
+        return render_template("librarian/login.html")
+
 
 @app.route('/user', methods=["GET", "POST"])
 def user():
@@ -18,10 +27,15 @@ def user():
         password = request.form.get('password')
         user = User.get(user_id)
         if user and user.get('password') == password and user.get('role') == 'Student':
-            return f"Welcome {user.get('name')}!"
+            return render_template("student/dashboard.html", name=user.get('name'))
         return f"Invalid credentials"
     else:
         return render_template("student/login.html")
+
+@app.route('/librarian/users', methods=["GET"])
+def librarian_users():
+    users = User.all()
+    return render_template("librarian/users.html", users=users)
 
 app.run(debug=True)
 

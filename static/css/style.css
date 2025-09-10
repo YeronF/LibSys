@@ -1,21 +1,27 @@
-a{
-    font-palette: #000;
+.ulogin-bg {
+    min-height: 100vh;
+    background-color: #DBF3FF;
+    opacity: 0.93;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .gl {
-  height: 5px;
-  width: 40%;
-  background-image: linear-gradient(to right, #3397C8, #47AAA4, #75D752);
-  margin: 0 auto;
-  margin-top: 10%;
-  margin-bottom: 5%;
+    height: 5px;
+    width: 40%;
+    background-image: linear-gradient(to right, #3397C8, #47AAA4, #75D752);
+    margin: 0 auto;
+    margin-top: 10%;
+    margin-bottom: 5%;
 }
 
-header{
+header {
     text-align: center;
 }
 
-.lb, .ub {
+.lb,
+.ub {
     height: 180px;
     width: 250px;
     background-color: #97FF71;
@@ -34,21 +40,22 @@ header{
     background-color: #73D1FF;
 }
 
-.lb:hover{
+.lb:hover {
     cursor: pointer;
     opacity: 100%;
     transform: scale(1.05);
     transition: all 0.3s ease-in-out;
 }
 
-.ub:hover{
+.ub:hover {
     cursor: pointer;
     opacity: 100%;
     transform: scale(1.05);
     transition: all 0.3s ease-in-out;
 }
 
-.l, .u {
+.l,
+.u {
     height: 100px;
     width: 100px;
     border-radius: 50%;
@@ -63,34 +70,13 @@ header{
     gap: 200px;
 }
 
-body.b {
-    background-color: #E4FFC5;
-    opacity: 96%;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0;
-}
-
-body.b2 {
-    background-color: #C5E4FF;
-    opacity: 96%;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0;
-}
-
-
-.sllb, .sllb2 {
+.sllb,
+.sllb2 {
     width: 450px;
     height: 430px;
     max-width: 95vw;
     min-width: 260px;
     min-height: 350px;
-    background: #fff;
     border-radius: 20px;
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
     display: flex;
@@ -104,21 +90,24 @@ body.b2 {
     overflow: hidden;
 }
 
-.sllb h2, .sllb2 .h2 {
+.sllb h2,
+.sllb2 .h2 {
     margin-top: 0;
     margin-bottom: 8px;
     text-align: center;
     width: 100%;
 }
 
-.sllb h4, .sllb2 h4 {
+.sllb h4,
+.sllb2 h4 {
     margin-top: 0;
     margin-bottom: 24px;
     text-align: center;
     width: 100%;
 }
 
-.sllb form, .sllb2 form {
+.sllb form,
+.sllb2 form {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -128,14 +117,16 @@ body.b2 {
     position: relative;
 }
 
-.sllb .i, .sllb2 .i2 {
+.sllb .i,
+.sllb2 .i2 {
     width: 100%;
     font-size: 1rem;
     margin-bottom: 10rem;
     margin-top: auto;
 }
 
-.sllb .sb, .sllb2 .sb2 {
+.sllb .sb,
+.sllb2 .sb2 {
     width: 100%;
     font-size: 1.1rem;
     margin-top: auto;
@@ -147,5 +138,17 @@ body.b2 {
     right: 0;
 }
 
+
 /*Librarian Dashboard*/
 
+.ddiv {
+    background-color: #E6E6E6;
+    opacity: 0.93;
+    border-radius: 12px;
+    border-color: #A3A3A3;
+    border-style: solid;
+}
+
+.button1 {
+    background-color: red;
+}

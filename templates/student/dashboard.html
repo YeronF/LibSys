@@ -1,0 +1,6 @@
+{% extends "dashbase.html" %} {% block content %}
+<form action="/search" method="get">
+    <input type="search" id="search-input" name="query" placeholder="Search For a Book">
+    <button type="submit">Search</button>
+</form>
+{% endblock %}
