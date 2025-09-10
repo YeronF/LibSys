@@ -49,6 +49,11 @@ def user_book():
     books = Book.all()
     return render_template("student/book.html", books=books)
 
+@app.route('/librarian/books', methods=["GET"])
+def librarian_books():    
+    books = Book.all()
+    return render_template("librarian/books.html", books=books)
+
 app.run(debug=True)
 
 '''

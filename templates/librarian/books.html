@@ -7,10 +7,25 @@
 
 <body class="book_list">
     <h1>Books List</h1>
-    <ol>
+    <ul style="margin: 0 auto;">
         {% for book in books %}
-        <li>{{ book.title }} by {{ book.author }} (ISBN: {{ book.isbn }}, {{ book.year }})</li>
+        <li>{{ book.book_name }} by {{ book.author }} ({{ book.book_id }})</li>
         {% endfor %}
-    </ol>
-    <a href="{% url 'librarian_dashboard' %}">Back to Dashboard</a>
+    </ul>
+
+    <button onclick="document.querySelector('dialog').showModal()">Add Book</button>
+    <button onclick="document.querySelector('dialog').showModal()">Remove Book</button>
+
+    <dialog>
+        <form method="dialog">
+            <label for="book_name">Book Name:</label>
+            <input type="text" id="book_name" name="book_name" required><br><br>
+            <label for="author">Author:</label>
+            <input type="text" id="author" name="author" required><br><br>
+            <label for="book_id">Book ID:</label>
+            <input type="text" id="book_id" name="book_id" required><br><br>
+            <button type="submit">Add Book</button>
+            <button type="button" onclick="this.closest('dialog').close()">Cancel</button>
+        </form>
+
 </body>
