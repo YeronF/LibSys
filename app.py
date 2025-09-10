@@ -23,11 +23,18 @@ def librarian():
 @app.route('/user', methods=["GET", "POST"])
 def user():
     if request.method == "POST":
-        user_id = request.form.get('user_id')
-        password = request.form.get('password')
-        user = User.get(user_id)
-        if user and user.get('password') == password and user.get('role') == 'Student':
-            return render_template("student/dashboard.html", name=user.get('name'))
+        # search_query = request.args.get("query", "ALL")
+        search_query = request.form.get('query', 'ALL')
+        books = Book.all()
+        if search_query == "ALL":
+            user_id = request.form.get('user_id')
+            password = request.form.get('password')
+            user = User.get(user_id)
+            if user and user.get('password') == password and user.get('role') == 'Student':
+                return render_template("student/dashboard.html", name=user.get('name'), books=books)
+        else:
+            books = [book for book in books if search_query.lower() in book.get('book_name', '').lower()]
+            return render_template("student/dashboard.html", books=books)
         return f"Invalid credentials"
     else:
         return render_template("student/login.html")
@@ -36,6 +43,11 @@ def user():
 def librarian_users():
     users = User.all()
     return render_template("librarian/users.html", users=users)
+
+@app.route('/user/book', methods=["GET"])
+def user_book():    
+    books = Book.all()
+    return render_template("student/book.html", books=books)
 
 app.run(debug=True)
 
@@ -77,3 +89,20 @@ Rentals.add({
 })
 print(Rentals.all())
 '''
+
+
+# import random
+# import string
+
+# def gen_ran_str(n, incno=False):
+#     to_choose = string.ascii_lowercase
+#     if incno:
+#         to_choose += string.digits
+#     return ''.join(random.choices(to_choose, k=n))
+
+# for i in range(10):
+#     Book.add({
+#         'book_id':gen_ran_str(5, True),
+#         'book_name':gen_ran_str(7+i),
+#         'author':gen_ran_str(5+i)
+#     })

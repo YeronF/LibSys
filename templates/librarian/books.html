@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+
+<head>
+
+    <title>Books List</title>
+</head>
+
+<body class="book_list">
+    <h1>Books List</h1>
+    <ol>
+        {% for book in books %}
+        <li>{{ book.title }} by {{ book.author }} (ISBN: {{ book.isbn }}, {{ book.year }})</li>
+        {% endfor %}
+    </ol>
+    <a href="{% url 'librarian_dashboard' %}">Back to Dashboard</a>
+</body>

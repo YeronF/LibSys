@@ -1,6 +1,18 @@
 {% extends "dashbase.html" %} {% block content %}
-<form action="/search" method="get">
+<form action="/user" method="post">
     <input type="search" id="search-input" name="query" placeholder="Search For a Book">
-    <button type="submit">Search</button>
+    <a><button type="submit">Search</button></a>
 </form>
+
+<body class="book_list">
+    <h1>Books List</h1>
+    <ol>
+        {% for book in books %}
+        <li>{{ book.book_name }} by {{ book.author }} ({{ book.book_id }})</li>
+        {% endfor %}
+    </ol>
+</body>
+
+
+
 {% endblock %}

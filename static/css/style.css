@@ -152,3 +152,9 @@ header {
 .button1 {
     background-color: red;
 }
+
+.book_list {
+    margin-top: 20px;
+    width: 100%;
+    border-radius: 12px;
+}
