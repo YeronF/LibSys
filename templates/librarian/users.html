@@ -4,22 +4,24 @@
     <table>
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Role</th>
+                <th class="g">ID</th>
+                <th class="g">Name</th>
+                <th class="g">Email</th>
             </tr>
         </thead>
         <tbody>
-            {% for user in users %}
+            {% for user in users %} {% if user.role == 'Student' %}
             <tr>
-                <td>{{ user.user_id }}</td>
-                <td>{{ user.name }}</td>
-                <td>{{ user.email }}</td>
-                <td>{{ user.role }}</td>
+                <td class="g">{{ user.user_id }}</td>
+                <td class="g">{{ user.name }}</td>
+                <td class="g">{{ user.email }}</td>
             </tr>
-            {% endfor %}
+            {% endif %} {% endfor %}
         </tbody>
     </table>
+</div>
+</tr>
+</tbody>
+</table>
 
-    {% endblock %}
+{% endblock %}

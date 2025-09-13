@@ -54,7 +54,7 @@ def librarian_books():
     books = Book.all()
     return render_template("librarian/books.html", books=books)
 
-app.run(debug=True)
+app.run(debug=True, host='0.0.0.0')
 
 '''
 print(User.all())

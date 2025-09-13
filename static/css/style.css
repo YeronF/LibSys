@@ -158,3 +158,20 @@ header {
     width: 100%;
     border-radius: 12px;
 }
+
+.g {
+    text-align: center;
+    color: #333;
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #f9f9f9;
+}
+
+.table-container {
+    max-height: 400px;
+    overflow-y: auto;
+    margin: 0 auto;
+}
