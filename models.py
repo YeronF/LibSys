@@ -112,7 +112,7 @@ class Rentals:
         rentals = Rentals.all()
         for rental in rentals:
             if rental.get('book_id') == book_id and rental.get('user_id') == user_id:
-                rental['return status'] = return_status
+                rental['return_status'] = return_status
                 _write_json(rental_json_path, rentals)
                 return True
         return False

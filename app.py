@@ -86,25 +86,31 @@ def librarian_rentals():
     rentals = Rentals.all()
     return render_template("librarian/rentals.html", rentals=rentals)
 
-@app.route('/librarian/rentals/viewRentals.html', methods=["GET"])
+@app.route('/librarian/rentals/viewRentals', methods=["GET", "POST"])
 def librarian_view_rentals():    
     rentals = Rentals.all()
-    return render_template("librarian/view.html", rentals=rentals)
+    return render_template("librarian/viewRentals.html", rentals=rentals)
 
-@app.route('/librarian/rentals/addRental.html', methods=["GET", "POST"])
+@app.route('/librarian/rentals/setcomplete/<user_id>-<book_id>', methods=["GET", "POST"])
+def librarian_set_complete(user_id, book_id):
+    Rentals.update_rental_status(book_id, user_id, 'True')
+    rentals = Rentals.all()
+    return render_template("librarian/viewRentals.html", rentals=rentals)
+
+
+@app.route('/librarian/rentals/addRental', methods=["GET", "POST"])
 def librarian_add_rental():
     if request.method == "POST":
         book_id = request.form.get('book_id')
         user_id = request.form.get('user_id')
-        check_in_date = request.form.get('check-in date')
-        check_out_date = request.form.get('check-out date')
-        return_status = request.form.get('return status')
+        rental_date = request.form.get('rental_date')
+        for_how_long = request.form.get('for_how_long')
         Rentals.add({
             'book_id': book_id,
             'user_id': user_id,
-            'check-in date': check_in_date,
-            'check-out date': check_out_date,
-            'return status': return_status
+            'rental_date': rental_date,
+            'estimated_return_date': for_how_long,
+            'return_status': 'False'
         })
         
         return render_template("librarian/rentals.html", rentals=Rentals.all())

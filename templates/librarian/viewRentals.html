@@ -3,11 +3,22 @@
 
 <body>
     <h1>All Rentals</h1>
-    <ul>
+    {% if rentals %}
+    <ol>
         {% for rental in rentals %}
-        <li>Rental ID: {{ rental.rental_id }}, Book ID: {{ rental.book_id }}, User ID: {{ rental.user_id }}, Rental Date: {{ rental.rental_date }}, Return Date: {{ rental.return_date }}</li>
-        {% endfor %}
-    </ul>
+        <li>Book ID: {{ rental.book_id }}, User ID: {{ rental.user_id }}, Rental Date: {{ rental.rental_date }}, Estimated Return Date: {{ rental.estimated_return_date }}, Return Status: {{ rental.return_status }}</li>
+        {% if rental.return_status == 'False' %}
+        <form action="/librarian/rentals/setcomplete/{{ rental.user_id }}-{{ rental.book_id }}" method="post">
+            <button type="submit">Set as Complete</button>
+        </form>
+        {% endif %} {% endfor %}
+    </ol>
+    {% else %}
+    <p>No rentals found.</p>
+    {% endif %}
+    <form action="/librarian/rentals" method="get">
+        <button type="submit">Back to Rentals</button>
+    </form>
 </body>
 
 </html>
