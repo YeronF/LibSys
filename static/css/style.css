@@ -472,3 +472,9 @@ header {
     width: 100%;
     border-radius: 12px;
 }
+
+.centered {
+    display: flexbox;
+    justify-content: center;
+    align-items: center;
+}

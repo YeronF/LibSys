@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html>
+{% extends "dashbase.html" %} {% block content %}
 
 <head>
     <title>Add Rental</title>
@@ -9,7 +8,12 @@
     <h1>Add Rental</h1>
     <form method="POST">
         <label for="book_id">Book ID:</label>
-        <input type="text" id="book_id" name="book_id" required>
+        <select id="book_id" name="book_id" required>
+        <option value="{{book.id}}" selected>Select a book</option>
+        {% for book in books %}
+            <option value="{{ book.id }}">{{ book.id }}</option>
+        {% endfor %}
+        </select>
         <label for="user_id">User ID:</label>
         <input type="text" id="user_id" name="user_id" required>
         <label for="rental_date">Rental Date:</label>
@@ -20,4 +24,4 @@
     </form>
 </body>
 
-</html>
+{% endblock %}
