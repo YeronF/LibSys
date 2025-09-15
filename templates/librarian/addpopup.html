@@ -1,23 +1,18 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-
-    <title>Add Book</title>
-</head>
-
-<body>
+ {% extends "dashbase.html" %} {% block content %}
+<div class="add-popup">
     <h1>Add Book</h1>
     <form action="/librarian/books/addpopup" method="post">
         <label for="book_id">Book ID:</label>
         <input type="text" id="book_id" name="book_id" required><br><br>
+
         <label for="book_name">Book Name:</label>
         <input type="text" id="book_name" name="book_name" required><br><br>
+
         <label for="author">Author:</label>
         <input type="text" id="author" name="author" required><br><br>
-        <button type="submit">Add Book</button>
-        <button type="button" onclick="this.closest('dialog').close()">Cancel</button>
-    </form>
-</body>
 
-</html>
+        <button type="submit">Add Book</button>
+        <button type="button" onclick="window.history.back()">Cancel</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,24 +1,21 @@
-<!DOCTYPE html>
-
-<head>
-
-    <title>Books List</title>
-</head>
-
 <body class="book_list">
+    {% extends "dashbase.html" %} {% block content %}
     <h1>Books List</h1>
+
     <ul style="margin: 0 auto;">
         {% for book in books %}
         <li>{{ book.book_name }} by {{ book.author }} ({{ book.book_id }})</li>
+        {% else %}
+        <li>No books found.</li>
         {% endfor %}
     </ul>
 
     <form action="/librarian/books/addpopup" method="get">
-        <button>Add Book</button>
+        <button type="submit">Add Book</button>
     </form>
 
     <form action="/librarian/books/removepopup" method="get">
-        <button>Remove Book</button>
+        <button type="submit">Remove Book</button>
     </form>
-
+    {% endblock %}
 </body>

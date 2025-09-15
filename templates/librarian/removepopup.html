@@ -1,18 +1,9 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-
-    <title>Remove Book</title>
-</head>
-
-<body>
-    <h1>Remove Book</h1>
-    <form action="/librarian/books/removepopup" method="post">
-        <label for="book_id">Book ID:</label>
-        <input type="text" id="book_id" name="book_id" required><br><br>
-        <button type="submit">Remove Book</button>
-        <button type="button" </form>
-</body>
-
-</html>
+ {% extends "dashbase.html" %} {% block content %}
+<h1>Remove Book</h1>
+<form action="/librarian/books/removepopup" method="post">
+    <label for="book_id">Book ID:</label>
+    <input type="text" id="book_id" name="book_id" required><br><br>
+    <button type="submit">Remove Book</button>
+    <button type="button" onclick="window.history.back();">Cancel</button>
+</form>
+{% endblock %}

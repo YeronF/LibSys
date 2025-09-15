@@ -1,3 +1,317 @@
+/* --- Site-wide base & header/logo --- */
+
+:root {
+    --primary-blue: #4A7FAD;
+    --accent-teal: #47AAA4;
+    --accent-green: #75D752;
+    --card-bg: #ffffff;
+    --muted: #f4f6f8;
+    --text-dark: #222;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", Roboto, Arial, system-ui, -apple-system, "Helvetica Neue", sans-serif;
+    color: var(--text-dark);
+    background: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+
+/* header */
+
+header {
+    width: 100%;
+    text-align: center;
+    padding: 18px 12px;
+    background: transparent;
+    box-shadow: none;
+    z-index: 10;
+}
+
+
+/* logo wrapper and image */
+
+.logo {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 0;
+}
+
+.logo-img {
+    display: block;
+    max-width: 220px;
+    width: min(30%, 220px);
+    height: auto;
+    margin: 0 auto;
+}
+
+
+/* page wrapper for login (keeps header/logo separate) */
+
+.login-bg {
+    min-height: calc(100vh - 88px);
+    /* leave header space */
+    background-color: #DBF3FF;
+    opacity: 0.93;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 28px 16px;
+    box-sizing: border-box;
+}
+
+
+/* main container padding so header and content don't overlap */
+
+main {
+    width: 100%;
+    min-height: calc(100vh - 88px);
+}
+
+
+/* --- Page wrappers (login / general content) --- */
+
+
+/* Keep theme colors but make wrappers consistent */
+
+.login-bg,
+.ulogin-bg,
+.b,
+.b2,
+.page-bg {
+    min-height: calc(100vh - 88px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 28px 16px;
+    background-color: #DBF3FF;
+    /* original login blue */
+    opacity: 0.93;
+}
+
+
+/* allow alternative green-ish pages while reusing class names */
+
+.page-bg.alt {
+    background-color: #E4FFC5;
+}
+
+
+/* card styles (applies to .sllb and .sllb2) */
+
+.sllb,
+.sllb2 {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(250, 250, 250, 0.95));
+    color: var(--text-dark);
+    width: 450px;
+    max-width: 95vw;
+    min-width: 260px;
+    min-height: 350px;
+    border-radius: 16px;
+    box-shadow: 0 8px 28px rgba(31, 38, 135, 0.12);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 32px;
+    box-sizing: border-box;
+    margin: 12px;
+    position: relative;
+    overflow: hidden;
+}
+
+
+/* headings inside cards */
+
+.sllb h2,
+.sllb2 h2,
+.sllb h4,
+.sllb2 h4 {
+    text-align: center;
+    width: 100%;
+    margin: 0 0 12px 0;
+    color: var(--primary-blue);
+}
+
+
+/* form layout inside cards */
+
+.sllb form,
+.sllb2 form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    align-items: stretch;
+    margin-top: 8px;
+}
+
+
+/* inputs and labels */
+
+label {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.95rem;
+    color: #2b3b4a;
+    gap: 6px;
+}
+
+input[type="text"],
+input[type="password"],
+input,
+select,
+textarea {
+    padding: 10px 12px;
+    border: 1px solid #d6e3ee;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    background: #fff;
+    outline: none;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px rgba(74, 127, 173, 0.12);
+}
+
+
+/* buttons */
+
+button,
+.btn {
+    background: linear-gradient(90deg, var(--primary-blue), var(--accent-teal));
+    color: #fff;
+    border: none;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: transform 0.12s ease, box-shadow 0.12s ease, opacity 0.12s ease;
+}
+
+button:hover,
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(74, 127, 173, 0.14);
+}
+
+
+/* small helpers */
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.muted {
+    color: #6c7a86;
+    font-size: 0.9rem;
+}
+
+
+/* grid & lists */
+
+.bg {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+
+/* preserve existing .gl style but tighten spacing */
+
+.gl {
+    height: 6px;
+    width: 40%;
+    background-image: linear-gradient(to right, #3397C8, #47AAA4, #75D752);
+    margin: 24px auto;
+    border-radius: 6px;
+}
+
+
+/* keep librarian card styles but polished */
+
+.lb,
+.ub {
+    height: 180px;
+    width: 250px;
+    background-color: #97FF71;
+    opacity: 0.9;
+    border: none;
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    font-size: 18px;
+}
+
+.ub {
+    background-color: #73D1FF;
+}
+
+
+/* tables, lists and dashboard helpers */
+
+.book_list {
+    margin-top: 20px;
+    width: 100%;
+    border-radius: 12px;
+    background: var(--card-bg);
+    padding: 12px;
+    box-shadow: 0 4px 12px rgba(31, 38, 135, 0.06);
+}
+
+
+/* responsive tweaks */
+
+@media (max-width: 700px) {
+    .logo-img,
+    .logo img {
+        max-width: 160px;
+        width: 40%;
+    }
+    .sllb,
+    .sllb2 {
+        padding: 20px;
+        width: 92vw;
+    }
+    .bg {
+        gap: 12px;
+    }
+}
+
+
+/* keep existing class names compatibility */
+
+.sllb .sb,
+.sllb2 .sb2 {
+    width: 100%;
+    font-size: 1.05rem;
+    padding: 12px;
+    position: static;
+    margin-top: 12px;
+    border-radius: 8px;
+}
+
+
+/* end additions */
+
 .ulogin-bg {
     min-height: 100vh;
     background-color: #DBF3FF;
@@ -157,21 +471,4 @@ header {
     margin-top: 20px;
     width: 100%;
     border-radius: 12px;
-}
-
-.g {
-    text-align: center;
-    color: #333;
-    padding: 8px;
-    border-bottom: 1px solid #ddd;
-    font-family: Arial, sans-serif;
-    font-size: 16px;
-    font-weight: bold;
-    background-color: #f9f9f9;
-}
-
-.table-container {
-    max-height: 400px;
-    overflow-y: auto;
-    margin: 0 auto;
 }
