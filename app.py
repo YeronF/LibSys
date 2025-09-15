@@ -19,11 +19,10 @@ def librarian():
     else:
         return render_template("librarian/login.html")
 
-
+fetch_name = lambda x: [x, ''][x==None]
 @app.route('/user', methods=["GET", "POST"])
 def user():
     if request.method == "POST":
-        # search_query = request.args.get("query", "ALL")
         search_query = request.form.get('query', 'ALL')
         books = Book.all()
         if search_query == "ALL":
@@ -33,7 +32,7 @@ def user():
             if user and user.get('password') == password and user.get('role') == 'Student':
                 return render_template("student/dashboard.html", name=user.get('name'), books=books)
         else:
-            books = [book for book in books if search_query.lower() in book.get('book_name', '').lower()]
+            books = [book for book in books if search_query.lower() in fetch_name(book.get('book_name', '')).lower()]
             return render_template("student/dashboard.html", books=books)
         return f"Invalid credentials"
     else:
@@ -53,6 +52,64 @@ def user_book():
 def librarian_books():    
     books = Book.all()
     return render_template("librarian/books.html", books=books)
+
+@app.route('/librarian/books/addpopup', methods=["GET", "POST"])
+def librarian_add_book():
+    if request.method == "POST":
+        book_id = request.form.get('book_id')
+        book_name = request.form.get('book_name')
+        author = request.form.get('author')
+        Book.add({
+            'book_id': book_id,
+            'book_name': book_name,
+            'author': author
+        })
+        
+        return render_template("librarian/books.html", books=Book.all())
+    else:
+        return render_template("librarian/addpopup.html")
+    
+@app.route('/librarian/books/removepopup', methods=["GET", "POST"])
+def librarian_remove_book():
+    if request.method == "POST":
+        book_id = request.form.get('book_id')
+        book = Book.get(book_id)
+        if book:
+            Book.remove(book)
+            return render_template("librarian/books.html", books=Book.all())
+        return f"Book with ID {book_id} not found."
+    else:
+        return render_template("librarian/removepopup.html")
+    
+@app.route('/librarian/rentals', methods=["GET"])
+def librarian_rentals():    
+    rentals = Rentals.all()
+    return render_template("librarian/rentals.html", rentals=rentals)
+
+@app.route('/librarian/rentals/viewRentals.html', methods=["GET"])
+def librarian_view_rentals():    
+    rentals = Rentals.all()
+    return render_template("librarian/view.html", rentals=rentals)
+
+@app.route('/librarian/rentals/addRental.html', methods=["GET", "POST"])
+def librarian_add_rental():
+    if request.method == "POST":
+        book_id = request.form.get('book_id')
+        user_id = request.form.get('user_id')
+        check_in_date = request.form.get('check-in date')
+        check_out_date = request.form.get('check-out date')
+        return_status = request.form.get('return status')
+        Rentals.add({
+            'book_id': book_id,
+            'user_id': user_id,
+            'check-in date': check_in_date,
+            'check-out date': check_out_date,
+            'return status': return_status
+        })
+        
+        return render_template("librarian/rentals.html", rentals=Rentals.all())
+    else:
+        return render_template("librarian/addRental.html")
 
 app.run(debug=True, host='0.0.0.0')
 

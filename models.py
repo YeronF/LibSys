@@ -48,6 +48,16 @@ class User:
         users.append(data)
         _write_json(user_json_path, users)
 
+    @staticmethod
+    def remove(data):
+        users = User.all()
+        if data in users:
+            users.remove(data)
+            _write_json(user_json_path, users)
+            return True
+        
+        return False
+
     
 class Book:
     
@@ -57,7 +67,7 @@ class Book:
     
     @staticmethod
     def get(book_id):
-        books = _read_json(book_json_path)
+        books = Book.all()
         for book in books:
             if book.get('book_id') == book_id:
                 return book
@@ -65,10 +75,19 @@ class Book:
 
     @staticmethod
     def add(data):
-        book = _read_json(book_json_path)
+        book = Book.all()
         book.append(data)
         _write_json(book_json_path, book)
 
+    @staticmethod
+    def remove(data):
+        book = Book.all()
+        if data in book:
+            book.remove(data)
+            _write_json(book_json_path, book)
+            return True
+        
+        return False
 
 class Rentals:
     

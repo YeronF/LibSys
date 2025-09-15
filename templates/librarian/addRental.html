@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Add Rental</title>
+</head>
+
+<body>
+    <h1>Add Rental</h1>
+    <form action="/librarian/rentals/add" method="POST">
+        <label for="book_id">Book ID:</label>
+        <input type="text" id="book_id" name="book_id" required>
+        <label for="user_id">User ID:</label>
+        <input type="text" id="user_id" name="user_id" required>
+        <label for="rental_date">Rental Date:</label>
+        <input type="date" id="rental_date" name="rental_date" required>
+        <label for="return_date">Return Date:</label>
+        <input type="date" id="return_date" name="return_date" required>
+        <button type="submit">Add Rental</button>
+    </form>
+</body>
+
+</html>

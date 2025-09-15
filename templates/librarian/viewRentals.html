@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <h1>All Rentals</h1>
+    <ul>
+        {% for rental in rentals %}
+        <li>Rental ID: {{ rental.rental_id }}, Book ID: {{ rental.book_id }}, User ID: {{ rental.user_id }}, Rental Date: {{ rental.rental_date }}, Return Date: {{ rental.return_date }}</li>
+        {% endfor %}
+    </ul>
+</body>
+
+</html>

@@ -13,19 +13,12 @@
         {% endfor %}
     </ul>
 
-    <button onclick="document.querySelector('dialog').showModal()">Add Book</button>
-    <button onclick="document.querySelector('dialog').showModal()">Remove Book</button>
+    <form action="/librarian/books/addpopup" method="get">
+        <button>Add Book</button>
+    </form>
 
-    <dialog>
-        <form method="dialog">
-            <label for="book_name">Book Name:</label>
-            <input type="text" id="book_name" name="book_name" required><br><br>
-            <label for="author">Author:</label>
-            <input type="text" id="author" name="author" required><br><br>
-            <label for="book_id">Book ID:</label>
-            <input type="text" id="book_id" name="book_id" required><br><br>
-            <button type="submit">Add Book</button>
-            <button type="button" onclick="this.closest('dialog').close()">Cancel</button>
-        </form>
+    <form action="/librarian/books/removepopup" method="get">
+        <button>Remove Book</button>
+    </form>
 
 </body>
