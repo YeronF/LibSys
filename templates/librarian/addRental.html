@@ -8,14 +8,23 @@
     <h1>Add Rental</h1>
     <form method="POST">
         <label for="book_id">Book ID:</label>
-        <select id="book_id" name="book_id" required>
-        <option value="{{book.id}}" selected>Select a book</option>
-        {% for book in books %}
-            <option value="{{ book.id }}">{{ book.id }}</option>
+        <select name="book_id" method="GET" action="/">
+        <option value="{{books[0]}}" selected>{{books[0]}}</option>
+        {% for book in books[1:] %}
+            <option value="{{book}}">{{book}}</option>
         {% endfor %}
         </select>
+
         <label for="user_id">User ID:</label>
-        <input type="text" id="user_id" name="user_id" required>
+        <select name="user_id" method="GET" action="/">
+        <option value="{{users[0]}}" selected>{{users[0]}}</option>
+        {% for user in users[1:] %}
+            <option value="{{user}}">{{user}}</option>
+        {% endfor %}
+        </select>
+
+
+
         <label for="rental_date">Rental Date:</label>
         <input type="date" id="rental_date" name="rental_date" required>
         <label for="for_how_long">Number of Days:</label>

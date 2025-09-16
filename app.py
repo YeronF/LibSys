@@ -115,7 +115,10 @@ def librarian_add_rental():
         
         return render_template("librarian/rentals.html", rentals=Rentals.all())
     else:
-        return render_template("librarian/addRental.html")
+        books = [book['book_id'] for book in Book.all()]
+        users = [user['user_id'] for user in User.all() if user['role'] == 'Student']
+        return render_template('librarian/addRental.html', books=books, users=users)
+
 
 app.run(debug=True, host='0.0.0.0')
 
