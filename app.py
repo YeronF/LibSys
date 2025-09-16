@@ -93,8 +93,10 @@ def librarian_view_rentals():
 
 @app.route('/librarian/rentals/setcomplete/<user_id>-<book_id>', methods=["GET", "POST"])
 def librarian_set_complete(user_id, book_id):
-    Rentals.update_rental_status(book_id, user_id, 'True')
+    stat = Rentals.update_rental_status(book_id, user_id, 'True')
     rentals = Rentals.all()
+    if not stat:
+        return f"Rental record for User ID {user_id} and Book ID {book_id} not found."
     return render_template("librarian/viewRentals.html", rentals=rentals)
 
 
@@ -117,7 +119,38 @@ def librarian_add_rental():
     else:
         books = [book['book_id'] for book in Book.all()]
         users = [user['user_id'] for user in User.all() if user['role'] == 'Student']
-        return render_template('librarian/addRental.html', books=books, users=users)
+        return render_template('librarian/addRental.html', books=books, users=users) 
+
+@app.route('/librarian/users/adduser', methods=["GET", "POST"])
+def librarian_add_user():
+    if request.method == "POST":
+        user_id = request.form.get('user_id')
+        user_name = request.form.get('user_name')
+        email = request.form.get('email')
+        password = request.form.get('password')
+        role = request.form.get('role')
+        User.add({
+            'user_id': user_id,
+            'name': user_name,
+            'email': email,
+            'password': password,
+            'role': role
+        })
+        return render_template("librarian/users.html", users=User.all())
+    else:
+        return render_template("librarian/adduser.html")
+        
+@app.route('/librarian/users/removeuser', methods=["GET", "POST"])
+def librarian_remove_user():
+    if request.method == "POST":
+        user_id = request.form.get('user_id')
+        user = User.get(user_id)
+        if user:
+            User.remove(user)
+            return render_template("librarian/users.html", users=User.all())
+        return f"User with ID {user_id} not found."
+    else:
+        return render_template("librarian/removeuser.html")
 
 
 app.run(debug=True, host='0.0.0.0')
@@ -171,9 +204,19 @@ print(Rentals.all())
 #         to_choose += string.digits
 #     return ''.join(random.choices(to_choose, k=n))
 
-# for i in range(10):
-#     Book.add({
-#         'book_id':gen_ran_str(5, True),
-#         'book_name':gen_ran_str(7+i),
-#         'author':gen_ran_str(5+i)
+# def gen_id(n):
+#     return 'US' + ''.join(random.choices(string.digits, k=n))
+
+# for i in range(20):
+#     # Book.add({
+#     #     'book_id':gen_ran_str(5, True),
+#     #     'book_name':gen_ran_str(7+i),
+#     #     'author':gen_ran_str(5+i)
+#     # })
+#     User.add({
+#         'user_id':gen_id(3+i),
+#         'name':gen_ran_str(5+i),
+#         'email':gen_ran_str(5+i)+'@gmail.com',
+#         'password':gen_ran_str(8, True),
+#         'role':'Student' if i%2==0 else 'Teacher'
 #     })

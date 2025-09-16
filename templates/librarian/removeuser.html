@@ -1,0 +1,9 @@
+{% extends "dashbase.html" %} {% block content %}
+<h1>Remove user</h1>
+<form action="/librarian/users/removeuser" method="post">
+    <label for="user_id">User ID:</label>
+    <input type="text" id="user_id" name="user_id" required><br><br>
+    <button type="submit">Remove User</button>
+    <button type="button" onclick="window.history.back();">Cancel</button>
+</form>
+{% endblock %}
