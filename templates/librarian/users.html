@@ -1,29 +1,30 @@
 {% extends "dashbase.html" %} {% block content %}
 <div class="table-container">
     <h2>Registered Users</h2>
-    <table>
-        <thead>
-            <tr>
-                <th class="g">ID</th>
-                <th class="g">Name</th>
-                <th class="g">Email</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for user in users %} {% if user.role == 'Student' %}
-            <tr>
-                <td class="g">{{ user.user_id }}</td>
-                <td class="g">{{ user.name }}</td>
-                <td class="g">{{ user.email }}</td>
-            </tr>
-            {% endif %} {% endfor %}
-        </tbody>
-    </table>
-    <button onclick="location.href='/librarian/users/adduser'">Add User</button>
-    <button onclick="location.href='/librarian/users/removeuser'">Remove User</button>
-</div>
-</tr>
-</tbody>
-</table>
+    <tr>
+        <th class="g1">ID</th>
+        <th class="g2">Name</th>
+        <th class="g3">Email</th>
+    </tr>
+    {% for user in users %} {% if user.role == 'Student' %}
+    <tr>
+        <div class="uddiv">
+            <td><label class="g1" style="font-size: small;">{{ user.user_id }}</label></td>
+            <td><label class="g2" style="font-size: small;">{{ user.name }}</label></td>
+            <td><label class="g3" style="font-size: small; background-color: #E6E6E6;">{{ user.email }}</label></td>
+        </div>
+    </tr>
+    {% endif %} {% endfor %}
+    <div class="right-column">
+        <button onclick="location.href='/librarian/users/adduser'" , class="button20">Add User</button>
+        <button onclick="location.href='/librarian/users/removeuser'" , class="button21">Remove User</button>
+    </div>
 
-{% endblock %}
+    <div class="pagination">
+        {% if page > 1 %}
+        <a href="{{ url_for('librarian_users', page=page-1) }}">&laquo; Previous</a> {% endif %}
+        <span>Page {{ page }} of {{ total_pages }}</span> {% if page
+        < total_pages %} <a href="{{ url_for('librarian_users', page=page+1) }}">Next &raquo;</a>
+            {% endif %}
+    </div>
+    {% endblock %}

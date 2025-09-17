@@ -50,7 +50,6 @@ header {
     max-width: 220px;
     width: min(30%, 220px);
     height: auto;
-    margin: 0 auto;
 }
 
 
@@ -74,6 +73,8 @@ header {
 main {
     width: 100%;
     min-height: calc(100vh - 88px);
+    padding: 16px 12px 32px 12px;
+    margin: 0 auto;
 }
 
 
@@ -206,9 +207,6 @@ button:hover,
     box-shadow: 0 6px 18px rgba(74, 127, 173, 0.14);
 }
 
-
-/* small helpers */
-
 .center {
     display: flex;
     justify-content: center;
@@ -220,9 +218,6 @@ button:hover,
     font-size: 0.9rem;
 }
 
-
-/* grid & lists */
-
 .bg {
     display: flex;
     flex-direction: row;
@@ -231,9 +226,6 @@ button:hover,
     flex-wrap: wrap;
 }
 
-
-/* preserve existing .gl style but tighten spacing */
-
 .gl {
     height: 6px;
     width: 40%;
@@ -241,9 +233,6 @@ button:hover,
     margin: 24px auto;
     border-radius: 6px;
 }
-
-
-/* keep librarian card styles but polished */
 
 .lb,
 .ub {
@@ -265,9 +254,6 @@ button:hover,
     background-color: #73D1FF;
 }
 
-
-/* tables, lists and dashboard helpers */
-
 .book_list {
     margin-top: 20px;
     width: 100%;
@@ -276,9 +262,6 @@ button:hover,
     padding: 12px;
     box-shadow: 0 4px 12px rgba(31, 38, 135, 0.06);
 }
-
-
-/* responsive tweaks */
 
 @media (max-width: 700px) {
     .logo-img,
@@ -461,20 +444,108 @@ header {
     border-radius: 12px;
     border-color: #A3A3A3;
     border-style: solid;
+    border-width: 1px;
+    margin-bottom: 8px;
+    text-align: center;
 }
 
-.button1 {
-    background-color: red;
+.uddiv {
+    background-color: #E6E6E6;
+    opacity: 0.93;
+    border-radius: 12px;
+    border-color: #A3A3A3;
+    border-style: solid;
+    border-width: 1px;
+    margin-bottom: 8px;
+    text-align: center;
+    width: 800px;
 }
 
 .book_list {
     margin-top: 20px;
+    row-gap: 12px;
     width: 100%;
     border-radius: 12px;
+    margin-left: 20px;
 }
 
 .centered {
-    display: flexbox;
-    justify-content: center;
+    max-width: 1100px;
+    margin: 20px auto;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.centered .button1,
+.centered .button2,
+.centered .button3 {
+    display: block;
+    width: 100%;
+    max-width: 1000px;
+    margin: 12px auto;
+    box-sizing: border-box;
+    flex: 50%;
+    padding: 6%;
+    margin: 12px auto;
+    font-size: 1.2rem;
+    border-radius: 12px;
+    border: none;
+    background: linear-gradient(90deg, var(--primary-blue), var(--accent-teal));
+    color: #fff;
+}
+
+.button20,
+.button21 {
+    display: block;
+    width: 400px;
+    margin: 12px 6px;
+    box-sizing: border-box;
+    flex: 50%;
+    padding: 10%;
+    font-size: 1rem;
+    border-radius: 12px;
+    border: none;
+    background: linear-gradient(90deg, var(--primary-blue), var(--accent-teal));
+    color: #fff;
+    font-size: 1.2rem;
+}
+
+.right-column {
+    position: absolute;
+    right: 15.5%;
+    top: 45%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
     align-items: center;
+    z-index: 20;
+}
+
+.g1 {
+    text-align: left;
+}
+
+.g2 {
+    text-align: center;
+}
+
+.g3 {
+    text-align: right;
+}
+
+.pagination {
+    text-align: center;
+    display: inline-block;
+}
+
+.pagination a.active {
+    background-color: var(--primary-blue);
+    color: #fff;
+}
+
+.pagination a:hover:not(.active) {
+    border: 1px solid var(--primary-blue);
+    margin: 0 4px;
+    border-radius: 8px;
 }

@@ -10,13 +10,11 @@
 <body>
     <header>
         <div class="ddiv">
-            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="LibSys Logo" style="margin-right: 5px; display: block; height: 10%; width: 10%;">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="LibSys Logo" class="logo-img">
         </div>
     </header>
     <main>
-        <div class="centered">
-            {% block content %}{% endblock %}
-        </div>
+        {% block content %}{% endblock %}
     </main>
 </body>
 

@@ -1,4 +1,7 @@
 {% extends "dashbase.html" %} {% block content %}
-<button onclick="location.href='/librarian/users'" class="button1">Manage Users</button>
-<button onclick="location.href='/librarian/books'" class="button2">Manage Books</button>
-<button onclick="location.href='/librarian/rentals'" class="button3">Manage Rentals</button> {% endblock %}
+<div class="centered">
+    <button onclick="location.href='/librarian/users'" class="button1">Manage Users</button>
+    <button onclick="location.href='/librarian/books'" class="button2">Manage Books</button>
+    <button onclick="location.href='/librarian/rentals'" class="button3">Manage Rentals</button>
+</div>
+{% endblock %}

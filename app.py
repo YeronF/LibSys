@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, url_for
 from models import User, Book, Rentals
+import math
 
 app = Flask(__name__)
 
@@ -41,7 +42,19 @@ def user():
 @app.route('/librarian/users', methods=["GET"])
 def librarian_users():
     users = User.all()
-    return render_template("librarian/users.html", users=users)
+    per_page = 10
+    page = int(request.args.get('page', 1))
+    users, total_pages = paginate_items(users, page, per_page)
+    return render_template("librarian/users.html", users=users, page=page, total_pages=total_pages)
+
+def paginate_items(items, page, per_page):
+    total_items = len(items)
+    total_pages = (total_items + per_page - 1) // per_page
+    if page < 1 or page > total_pages:
+        return [], total_pages
+    start = (page - 1) * per_page
+    end = start + per_page
+    return items[start:end], total_pages
 
 @app.route('/user/book', methods=["GET"])
 def user_book():    
@@ -136,7 +149,12 @@ def librarian_add_user():
             'password': password,
             'role': role
         })
-        return render_template("librarian/users.html", users=User.all())
+
+        users = User.all()
+        per_page = 10
+        page = int(request.args.get('page', 1))
+        users, total_pages = paginate_items(users, page, per_page)
+        return render_template("librarian/users.html", users=users, page=page, total_pages=total_pages)
     else:
         return render_template("librarian/adduser.html")
         
@@ -147,7 +165,11 @@ def librarian_remove_user():
         user = User.get(user_id)
         if user:
             User.remove(user)
-            return render_template("librarian/users.html", users=User.all())
+            users = User.all()
+            per_page = 10
+            page = int(request.args.get('page', 1))
+            users, total_pages = paginate_items(users, page, per_page)
+            return render_template("librarian/users.html", users=users, page=page, total_pages=total_pages)
         return f"User with ID {user_id} not found."
     else:
         return render_template("librarian/removeuser.html")
