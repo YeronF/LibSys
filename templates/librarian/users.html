@@ -1,20 +1,24 @@
 {% extends "dashbase.html" %} {% block content %}
 <div class="table-container">
     <h2>Registered Users</h2>
-    <tr>
-        <th class="g1">ID</th>
-        <th class="g2">Name</th>
-        <th class="g3">Email</th>
-    </tr>
-    {% for user in users %} {% if user.role == 'Student' %}
-    <tr>
-        <div class="uddiv">
-            <td><label class="g1" style="font-size: small;">{{ user.user_id }}</label></td>
-            <td><label class="g2" style="font-size: small;">{{ user.name }}</label></td>
-            <td><label class="g3" style="font-size: small; background-color: #E6E6E6;">{{ user.email }}</label></td>
-        </div>
-    </tr>
-    {% endif %} {% endfor %}
+    <table>
+        <thead>
+            <tr>
+                <th> User ID </th>
+                <th> User Name </th>
+                <th> Email </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td> {{ user.user_id }} </td>
+                <td> {{ user.name }} </td>
+                <td> {{ user.email }} </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
     <div class="right-column">
         <button onclick="location.href='/librarian/users/adduser'" , class="button20">Add User</button>
         <button onclick="location.href='/librarian/users/removeuser'" , class="button21">Remove User</button>

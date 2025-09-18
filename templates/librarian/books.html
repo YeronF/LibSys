@@ -2,23 +2,41 @@
     {% extends "dashbase.html" %} {% block content %}
     <h1>Books List</h1>
 
-    <div class="book_list">
-        <ul style="margin: 0 auto; text-align: left;">
+    <table>
+        <thead>
+            <tr>
+                <th> Book ID </th>
+                <th> Book Name </th>
+                <th> Book Author </th>
+            </tr>
+        </thead>
+        <tbody>
             {% for book in books %}
-            <div class="ddiv">
-                <li>{{ book.book_name }} by {{ book.author }} ({{ book.book_id }})</li>
-            </div>
-            {% else %}
-            <li>No books found.</li>
+            <tr>
+                <td> {{ book.book_id }} </td>
+                <td> {{ book.book_name }} </td>
+                <td> {{ book.author }} </td>
+            </tr>
             {% endfor %}
-        </ul>
+        </tbody>
 
-        <form action="/librarian/books/addpopup" method="get">
-            <button type="submit">Add Book</button>
-        </form>
 
-        <form action="/librarian/books/removepopup" method="get">
-            <button type="submit">Remove Book</button>
-        </form>
-        {% endblock %}
+    </table>
+
+    <form action="/librarian/books/addpopup" method="get">
+        <button type="submit" calss="right-column">Add Book</button>
+    </form>
+
+    <form action="/librarian/books/removepopup" method="get">
+        <button type="submit" calss="right-column">Remove Book</button>
+    </form>
+
+    <div class="pagination">
+        {% if page > 1 %}
+        <a href="{{ url_for('librarian_books', page=page-1) }}">&laquo; Previous</a> {% endif %}
+        <span>Page {{ page }} of {{ total_pages }}</span> {% if page
+        < total_pages %} <a href="{{ url_for('librarian_books', page=page+1) }}">Next &raquo;</a>
+            {% endif %}
+    </div>
+    {% endblock %}
 </body>

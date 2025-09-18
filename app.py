@@ -15,7 +15,7 @@ def librarian():
         password = request.form.get('password')
         user = User.get(user_id)
         if user and user.get('password') == password and user.get('role') == 'Teacher':
-            return render_template("librarian/dashboard.html", name=user.get('name'))
+            return render_template("librarian/dashboard.html", name=user.get('name'), role=user.get('role'))
         return f"Invalid credentials"
     else:
         return render_template("librarian/login.html")
@@ -59,12 +59,16 @@ def paginate_items(items, page, per_page):
 @app.route('/user/book', methods=["GET"])
 def user_book():    
     books = Book.all()
+
     return render_template("student/book.html", books=books)
 
 @app.route('/librarian/books', methods=["GET"])
 def librarian_books():    
     books = Book.all()
-    return render_template("librarian/books.html", books=books)
+    per_page = 10
+    page = int(request.args.get('page', 1))
+    books, total_pages = paginate_items(books, page, per_page)
+    return render_template("librarian/books.html", books=books, page=page, total_pages=total_pages)
 
 @app.route('/librarian/books/addpopup', methods=["GET", "POST"])
 def librarian_add_book():
@@ -78,7 +82,11 @@ def librarian_add_book():
             'author': author
         })
         
-        return render_template("librarian/books.html", books=Book.all())
+        books = Book.all()
+        per_page = 10
+        page = int(request.args.get('page', 1))
+        books, total_pages = paginate_items(books, page, per_page)
+        return render_template("librarian/books.html", books=books, page=page, total_pages=total_pages)
     else:
         return render_template("librarian/addpopup.html")
     
@@ -89,7 +97,11 @@ def librarian_remove_book():
         book = Book.get(book_id)
         if book:
             Book.remove(book)
-            return render_template("librarian/books.html", books=Book.all())
+            books = Book.all()
+            per_page = 10
+            page = int(request.args.get('page', 1))
+            books, total_pages = paginate_items(books, page, per_page)
+            return render_template("librarian/books.html", books=books, page=page, total_pages=total_pages)
         return f"Book with ID {book_id} not found."
     else:
         return render_template("librarian/removepopup.html")
@@ -151,7 +163,7 @@ def librarian_add_user():
         })
 
         users = User.all()
-        per_page = 10
+        per_page = 2
         page = int(request.args.get('page', 1))
         users, total_pages = paginate_items(users, page, per_page)
         return render_template("librarian/users.html", users=users, page=page, total_pages=total_pages)
@@ -172,7 +184,8 @@ def librarian_remove_user():
             return render_template("librarian/users.html", users=users, page=page, total_pages=total_pages)
         return f"User with ID {user_id} not found."
     else:
-        return render_template("librarian/removeuser.html")
+        users = User.all()
+        return render_template("librarian/removeuser.html", users=users)
 
 
 app.run(debug=True, host='0.0.0.0')

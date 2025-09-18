@@ -2,7 +2,12 @@
 <h1>Remove user</h1>
 <form action="/librarian/users/removeuser" method="post">
     <label for="user_id">User ID:</label>
-    <input type="text" id="user_id" name="user_id" required><br><br>
+    <select name="user_id" method="GET" action="/">
+        <option value="{{users[0]['user_id']}}" selected>{{users[0]['user_id']}}</option>
+        {% for user in users[1:] %}
+            <option value="{{user['user_id']}}">{{user['user_id']}}</option>
+        {% endfor %}
+        </select>
     <button type="submit">Remove User</button>
     <button type="button" onclick="window.history.back();">Cancel</button>
 </form>
