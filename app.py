@@ -26,6 +26,9 @@ def user():
     if request.method == "POST":
         search_query = request.form.get('query', 'ALL')
         books = Book.all()
+        per_page = 10
+        page = int(request.args.get('page', 1))
+        books, total_pages = paginate_items(books, page, per_page)
         if search_query == "ALL":
             user_id = request.form.get('user_id')
             password = request.form.get('password')
@@ -34,7 +37,7 @@ def user():
                 return render_template("student/dashboard.html", name=user.get('name'), books=books)
         else:
             books = [book for book in books if search_query.lower() in fetch_name(book.get('book_name', '')).lower()]
-            return render_template("student/dashboard.html", books=books)
+            return render_template("student/dashboard.html", books=books, page=page, total_pages=total_pages)
         return f"Invalid credentials"
     else:
         return render_template("student/login.html")
@@ -104,7 +107,8 @@ def librarian_remove_book():
             return render_template("librarian/books.html", books=books, page=page, total_pages=total_pages)
         return f"Book with ID {book_id} not found."
     else:
-        return render_template("librarian/removepopup.html")
+        books = Book.all()
+        return render_template("librarian/removepopup.html", books=books)
     
 @app.route('/librarian/rentals', methods=["GET"])
 def librarian_rentals():    
@@ -114,7 +118,7 @@ def librarian_rentals():
 @app.route('/librarian/rentals/viewRentals', methods=["GET", "POST"])
 def librarian_view_rentals():    
     rentals = Rentals.all()
-    return render_template("librarian/viewRentals.html", rentals=rentals)
+    return render_template("librarian/viewRentals.html", rentals=rentals) 
 
 @app.route('/librarian/rentals/setcomplete/<user_id>-<book_id>', methods=["GET", "POST"])
 def librarian_set_complete(user_id, book_id):
@@ -187,6 +191,13 @@ def librarian_remove_user():
         users = User.all()
         return render_template("librarian/removeuser.html", users=users)
 
+
+@app.route('/user/book/rent/<book_name>-<book_id>', methods=["GET", "POST"])
+def user_rent(book_name, book_id):
+    stat = Rentals.update_rental_status(book_id, book_name, 'True')
+    if not stat:
+        return None
+    return render_template("student/rent.html")
 
 app.run(debug=True, host='0.0.0.0')
 

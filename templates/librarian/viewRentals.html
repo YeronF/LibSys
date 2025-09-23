@@ -2,24 +2,47 @@
 
 <body>
     <h1>All Rentals</h1>
-    {% if rentals %}
-    <ol>
-        {% for rental in rentals %}
-        <li>Book ID: {{ rental.book_id }}, User ID: {{ rental.user_id }}, Rental Date: {{ rental.rental_date }}, Estimated Return Date: {{ rental.estimated_return_date }}, Return Status: {{ rental.return_status }}</li>
-        {% if rental.return_status == 'False' %}
-        <return_status style="color: #ff0000;">False</return_status>
-        <form action="/librarian/rentals/setcomplete/{{ rental.user_id }}-{{ rental.book_id }}" method="post">
-            <button type="submit">Set as Complete</button>
-        </form>
-        {% endif %} {% if rental.return_status == 'True' %}
-        <return_status style="color: #24c416;">True</return_status>
-        {% endif %} {% endfor %}
-    </ol>
+    <table>
+        <thead>
+            {% if rentals %}
+            <tr>
+                <th> Book ID </th>
+                <th> User ID </th>
+                <th> Rental Date </th>
+                <th> Estimated Return Date </th>
+                <th> Return Status </th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for rental in rentals %}
+            <tr>
+                <td> {{ rental.book_id }} </td>
+                <td> {{ rental.user_id }} </td>
+                <td> {{ rental.rental_date }} </td>
+                <td> {{ rental.estimated_return_date }}</td>
+                <td> {% if rental.return_status == 'False' %}
+                    <return_status style="color: #ff0000;">False</return_status>
+                    <form action="/librarian/rentals/setcomplete/{{ rental.user_id }}-{{ rental.book_id }}" method="post">
+                        <button type="submit">Set as Complete</button>
+                    </form>
+                    {% endif %} {% if rental.return_status == 'True' %}
+                    <return_status style="color: #24c416;">True</return_status>
+                    {% endif %}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+
+
+    </table>
+
     {% else %}
     <p>No rentals found.</p>
     {% endif %}
     <form action="/librarian/rentals" method="get">
-        <button type="submit">Back to Rentals</button>
+        <div class="right-column">
+            <button type="submit" , class="btn1">Back to Rentals</button>
+        </div>
     </form>
 </body>
 

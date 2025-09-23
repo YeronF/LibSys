@@ -5,31 +5,43 @@
 </head>
 
 <body>
-    <h1>Add Rental</h1>
+    <h1 style="text-align: center; text-decoration: underline;">Add Rental</h1>
     <form method="POST">
-        <label for="book_id">Book ID:</label>
-        <select name="book_id" method="GET" action="/">
+        <label for="book_id" class="lcenter">Book ID:</label>
+        <div class="ecenter">
+            <select name="book_id" method="GET" action="/">
         <option value="{{books[0]}}" selected>{{books[0]}}</option>
         {% for book in books[1:] %}
             <option value="{{book}}">{{book}}</option>
         {% endfor %}
         </select>
+        </div>
 
-        <label for="user_id">User ID:</label>
-        <select name="user_id" method="GET" action="/">
+
+        <label for="user_id" class="lcenter">User ID:</label>
+        <div class="ecenter">
+            <select name="user_id" method="GET" action="/">
         <option value="{{users[0]}}" selected>{{users[0]}}</option>
         {% for user in users[1:] %}
             <option value="{{user}}">{{user}}</option>
         {% endfor %}
         </select>
+        </div>
 
 
 
-        <label for="rental_date">Rental Date:</label>
-        <input type="date" id="rental_date" name="rental_date" required>
-        <label for="for_how_long">Number of Days:</label>
-        <input type="number" id="for_how_long" name="for_how_long" required>
-        <button type="submit" onclick="window.location.href='/librarian/rentals'">Add Rental</button>
+
+        <label for="rental_date" class="lcenter">Rental Date:</label>
+        <div class="ecenter">
+            <input type="date" id="rental_date" name="rental_date" required>
+        </div>
+
+        <label for="for_how_long" class="lcenter">Number of Days:</label>
+        <div class="ecenter">
+            <input type="number" id="for_how_long" name="for_how_long" required>
+        </div>
+
+        <button type="submit" onclick="window.location.href='/librarian/rentals'" class="btn3">Add Rental</button>
     </form>
 </body>
 

@@ -596,6 +596,60 @@ th:hover {
     color: #000;
 }
 
+.btn1,
+.btn2 {
+    display: block;
+    width: 600px;
+    margin: 0 auto;
+    margin-bottom: 20px;
+    margin-top: 57px;
+    box-sizing: border-box;
+    flex: 50%;
+    padding: 10%;
+    font-size: 1rem;
+    border-radius: 12px;
+    border: none;
+    background: linear-gradient(90deg, var(--primary-blue), var(--accent-teal));
+    color: #fff;
+    font-size: 1.2rem;
+}
+
+.footer {
+    text-align: center;
+    height: 50px;
+    width: auto;
+    font-size: medium;
+}
+
+.lcenter {
+    text-align: center;
+}
+
+.ecenter {
+    display: flex;
+    justify-content: center;
+    align-items: right;
+    margin-bottom: 35px;
+}
+
+.btn3 {
+    display: block;
+    width: 270px;
+    margin: 0 auto;
+    margin-bottom: 20px;
+    margin-top: 57px;
+    box-sizing: border-box;
+    flex: 10%;
+    padding: 6%;
+    font-size: 1rem;
+    border-radius: 12px;
+    border: none;
+    background: linear-gradient(90deg, var(--primary-blue), var(--accent-teal));
+    color: #fff;
+    font-size: 1.2rem;
+    height: 70px;
+}
+
 
 /* Style the navigation bar */
 
@@ -628,7 +682,7 @@ th:hover {
 /* Current/active navbar link */
 
 .active {
-    background-color: #04AA6D;
+    background: linear-gradient(90deg, #4a7fad00, var(--accent-teal));
 }
 
 

@@ -18,12 +18,17 @@
             <a class="active" href="{{ url_for('librarian_users') }}"><i class="fa fa-fw fa-home"></i> Users</a>
             <a class="active" href="{{ url_for('librarian_books') }}"><i class="fa fa-fw fa-home"></i> Books</a>
             <a class="active" href="{{ url_for('librarian_rentals') }}"><i class="fa fa-fw fa-home"></i> Rentals</a> {% endif %}
-
         </div>
     </header>
     <main>
         {% block content %}{% endblock %}
     </main>
+    <div class="footer">
+        <footer>
+            Made by the students at Ethronics. Offical Website : <a href="https://ethronics.com/uk" target="_blank" , style="text-decoration: wavy;">Ethronics.com</a>
+        </footer>
+    </div>
+
 </body>
 
 </html>

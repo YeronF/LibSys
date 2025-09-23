@@ -1,8 +1,15 @@
  {% extends "dashbase.html" %} {% block content %}
 <h1>Remove Book</h1>
 <form action="/librarian/books/removepopup" method="post">
-    <label for="book_id">Book ID:</label>
-    <input type="text" id="book_id" name="book_id" required><br><br>
+    <label for="book_id" class="lcenter">Book ID:</label>
+    <div class="ecenter">
+        <select name="book_id" method="GET" action="/">
+        <option value="{{books[0]['book_id']}}" selected>{{books[0]['book_id']}}</option>
+        {% for book in books[1:] %}
+            <option value="{{book['book_id']}}">{{book['book_id']}}</option>
+        {% endfor %}
+        </select>
+    </div>
     <button type="submit">Remove Book</button>
     <button type="button" onclick="window.history.back();">Cancel</button>
 </form>
