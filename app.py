@@ -34,7 +34,7 @@ def user():
             password = request.form.get('password')
             user = User.get(user_id)
             if user and user.get('password') == password and user.get('role') == 'Student':
-                return render_template("student/dashboard.html", name=user.get('name'), books=books)
+                return render_template("student/dashboard.html", name=user.get('name'), books=books, user=user)
         else:
             books = [book for book in books if search_query.lower() in fetch_name(book.get('book_name', '')).lower()]
             return render_template("student/dashboard.html", books=books, page=page, total_pages=total_pages)
@@ -192,12 +192,23 @@ def librarian_remove_user():
         return render_template("librarian/removeuser.html", users=users)
 
 
-@app.route('/user/book/rent/<book_name>-<book_id>', methods=["GET", "POST"])
-def user_rent(book_name, book_id):
-    stat = Rentals.update_rental_status(book_id, book_name, 'True')
-    if not stat:
-        return None
-    return render_template("student/rent.html")
+@app.route('/user/book/rent/<user_id>-<book_id>', methods=["GET", "POST"])
+def user_rent(user_id, book_id):
+    if request.method == "POST":
+        rental_date = request.form.get('rental_date')
+        for_how_long = request.form.get('for_how_long')
+        stat = Rentals.add({
+                'book_id': book_id,
+                'user_id': user_id,
+                'rental_date': rental_date,
+                'estimated_return_date': for_how_long,
+                'return_status': 'Created'
+            })
+        user = User.get_by_user_id(user_id)
+        print(user_id, book_id, stat)
+        if not stat:
+            return None
+    return render_template("student/rent.html", book_id=book_id, user_id=user_id)
 
 app.run(debug=True, host='0.0.0.0')
 

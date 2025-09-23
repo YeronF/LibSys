@@ -1,11 +1,14 @@
 import json
 import os
+import datetime
 
 DATA_DIR = "data/"
 
 user_json_path = os.path.join(DATA_DIR, 'users.json')
 book_json_path = os.path.join(DATA_DIR, 'books.json')
 rental_json_path = os.path.join(DATA_DIR, 'rentals.json')
+book_json_path = os.path.join(DATA_DIR, 'books.json')
+request_json_path = os.path.join(DATA_DIR, 'request.json')
 
 if not os.path.exists(DATA_DIR):
     os.mkdir(DATA_DIR)
@@ -115,6 +118,17 @@ class Rentals:
                 rental['return_status'] = return_status
                 _write_json(rental_json_path, rentals)
                 return True
+        if return_status == "Created":
+            rentals.append({
+                'book_id': book_id,
+                'user_id' : user_id,
+                "rental_date": datetime.datetime.strftime("%Y-%m-%d"),
+                "estimated_return_date": "3", # Default
+                "return_status": return_status
+
+            })
+            return True
+
         return False
 
     @staticmethod
@@ -122,4 +136,5 @@ class Rentals:
         rentals = Rentals.all()
         rentals.append(data)
         _write_json(rental_json_path, rentals)
-    
+
+        return False

@@ -13,7 +13,7 @@
             <img src="{{ url_for('static', filename='images/logo.png') }}" alt="LibSys Logo" class="logo-img">
         </div>
         <div class="navbar">
-            {% if role == Teacher%}
+            {% if role == "Teacher"%}
             <a href=></a>
             <a class="active" href="{{ url_for('librarian_users') }}"><i class="fa fa-fw fa-home"></i> Users</a>
             <a class="active" href="{{ url_for('librarian_books') }}"><i class="fa fa-fw fa-home"></i> Books</a>
