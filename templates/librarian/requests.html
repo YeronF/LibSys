@@ -1,0 +1,16 @@
+{% extends "dashbase.html" %}{% block content %}
+
+<table>
+    <thead>
+        <tr>
+            <th> User Name </th>
+            <th> Book ID </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr> {{ user.name }} </tr>
+        <tr> {{ book.book_id }} </tr>
+    </tbody>
+</table>
+
+{% endblock %}

@@ -13,11 +13,18 @@
             <img src="{{ url_for('static', filename='images/logo.png') }}" alt="LibSys Logo" class="logo-img">
         </div>
         <div class="navbar">
+            <h4>Welcome {{name}}</h4>
             {% if role == "Teacher"%}
             <a href=></a>
             <a class="active" href="{{ url_for('librarian_users') }}"><i class="fa fa-fw fa-home"></i> Users</a>
             <a class="active" href="{{ url_for('librarian_books') }}"><i class="fa fa-fw fa-home"></i> Books</a>
-            <a class="active" href="{{ url_for('librarian_rentals') }}"><i class="fa fa-fw fa-home"></i> Rentals</a> {% endif %}
+            <a class="active" href="{{ url_for('librarian_rentals') }}"><i class="fa fa-fw fa-home"></i> Rentals</a>
+            <a class="active" href="{{ url_for('librarian_logout') }}"><i class="fa fa-fw fa-home"></i> Log Out</a> {% endif %}
+        </div>
+        <div class="navbar">
+            {% if user.role == "Student"%}
+            <a href=></a>
+            <a class="active" href="{{ url_for('user_logout') }}"><i class="fa fa-fw fa-home"></i> Log Out</a>{% endif %}
         </div>
     </header>
     <main>

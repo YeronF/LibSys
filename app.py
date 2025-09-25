@@ -1,8 +1,9 @@
-from flask import Flask, render_template, request, url_for
+from flask import Flask, render_template, request, url_for, session, redirect
 from models import User, Book, Rentals
 import math
 
 app = Flask(__name__)
+app.secret_key = 'the random string'
 
 @app.route('/', methods=["GET"])
 def landing_page():
@@ -15,9 +16,14 @@ def librarian():
         password = request.form.get('password')
         user = User.get(user_id)
         if user and user.get('password') == password and user.get('role') == 'Teacher':
-            return render_template("librarian/dashboard.html", name=user.get('name'), role=user.get('role'))
+            session['user_id'] = user_id
+            return render_template("librarian/dashboard.html", name=user.get('name'), role=user.get('role'), user=user)
         return f"Invalid credentials"
     else:
+        if session.get('user_id'):
+            user = User.get(session.get('user_id'))
+            if user.get('role') == "Teacher":
+                return render_template("librarian/dashboard.html", name=user.get('name'), role=user.get('role'), user=user)
         return render_template("librarian/login.html")
 
 fetch_name = lambda x: [x, ''][x==None]
@@ -34,21 +40,28 @@ def user():
             password = request.form.get('password')
             user = User.get(user_id)
             if user and user.get('password') == password and user.get('role') == 'Student':
-                return render_template("student/dashboard.html", name=user.get('name'), books=books, user=user)
+                session['user_id'] = user_id
+                return render_template("student/dashboard.html", name=user.get('name'), books=books, user=user, page=page, total_pages=total_pages)
         else:
-            books = [book for book in books if search_query.lower() in fetch_name(book.get('book_name', '')).lower()]
-            return render_template("student/dashboard.html", books=books, page=page, total_pages=total_pages)
+            if session.get('user_id'):
+                books = [book for book in books if search_query.lower() in fetch_name(book.get('book_name', '')).lower()]
+                user = User.get(session['user_id'])
+                return render_template("student/dashboard.html", name=user.get('name'), books=books, user=user, page=page, total_pages=total_pages)
+            
         return f"Invalid credentials"
     else:
         return render_template("student/login.html")
 
 @app.route('/librarian/users', methods=["GET"])
 def librarian_users():
-    users = User.all()
-    per_page = 10
-    page = int(request.args.get('page', 1))
-    users, total_pages = paginate_items(users, page, per_page)
-    return render_template("librarian/users.html", users=users, page=page, total_pages=total_pages)
+    if session.get('user_id'):
+        users = User.all()
+        per_page = 10
+        page = int(request.args.get('page', 1))
+        users, total_pages = paginate_items(users, page, per_page)
+        return render_template("librarian/users.html", users=users, page=page, total_pages=total_pages)
+    
+    return "You need to log in"
 
 def paginate_items(items, page, per_page):
     total_items = len(items)
@@ -60,136 +73,143 @@ def paginate_items(items, page, per_page):
     return items[start:end], total_pages
 
 @app.route('/user/book', methods=["GET"])
-def user_book():    
-    books = Book.all()
+def user_book():
+    if session.get('user_id'):
+        books = Book.all()
+        user = User.get(session['user_id'])
+        return render_template("student/book.html", books=books)
 
-    return render_template("student/book.html", books=books)
+    return "Please login"
 
 @app.route('/librarian/books', methods=["GET"])
-def librarian_books():    
-    books = Book.all()
-    per_page = 10
-    page = int(request.args.get('page', 1))
-    books, total_pages = paginate_items(books, page, per_page)
-    return render_template("librarian/books.html", books=books, page=page, total_pages=total_pages)
-
-@app.route('/librarian/books/addpopup', methods=["GET", "POST"])
-def librarian_add_book():
-    if request.method == "POST":
-        book_id = request.form.get('book_id')
-        book_name = request.form.get('book_name')
-        author = request.form.get('author')
-        Book.add({
-            'book_id': book_id,
-            'book_name': book_name,
-            'author': author
-        })
-        
+def librarian_books():
+    if session.get('user_id'):    
         books = Book.all()
         per_page = 10
         page = int(request.args.get('page', 1))
         books, total_pages = paginate_items(books, page, per_page)
         return render_template("librarian/books.html", books=books, page=page, total_pages=total_pages)
-    else:
-        return render_template("librarian/addpopup.html")
+    
+    return "Please login"
+
+@app.route('/librarian/books/addpopup', methods=["GET", "POST"])
+def librarian_add_book():
+    if session.get('user_id'):
+        if request.method == "POST":
+            book_id = request.form.get('book_id')
+            book_name = request.form.get('book_name')
+            author = request.form.get('author')
+            Book.add({
+                'book_id': book_id,
+                'book_name': book_name,
+                'author': author
+            })
+            
+            return redirect(url_for('librarian_books'))
+        else:
+            return render_template("librarian/addpopup.html")
     
 @app.route('/librarian/books/removepopup', methods=["GET", "POST"])
 def librarian_remove_book():
-    if request.method == "POST":
-        book_id = request.form.get('book_id')
-        book = Book.get(book_id)
-        if book:
-            Book.remove(book)
+    if session.get('user_id'):
+        if request.method == "POST":
+                book_id = request.form.get('book_id')
+                book = Book.get(book_id)
+                if book:
+                    Book.remove(book)
+                    return redirect(url_for('librarian_books'))
+
+                return f"Book with ID {book_id} not found."
+        else:
             books = Book.all()
-            per_page = 10
-            page = int(request.args.get('page', 1))
-            books, total_pages = paginate_items(books, page, per_page)
-            return render_template("librarian/books.html", books=books, page=page, total_pages=total_pages)
-        return f"Book with ID {book_id} not found."
-    else:
-        books = Book.all()
-        return render_template("librarian/removepopup.html", books=books)
-    
+            return render_template("librarian/removepopup.html", books=books)
+        
 @app.route('/librarian/rentals', methods=["GET"])
-def librarian_rentals():    
-    rentals = Rentals.all()
-    return render_template("librarian/rentals.html", rentals=rentals)
+def librarian_rentals():  
+    if session.get('user_id'):  
+        rentals = Rentals.all()
+        return render_template("librarian/rentals.html", rentals=rentals)
 
 @app.route('/librarian/rentals/viewRentals', methods=["GET", "POST"])
-def librarian_view_rentals():    
-    rentals = Rentals.all()
-    return render_template("librarian/viewRentals.html", rentals=rentals) 
+def librarian_view_rentals():
+    if session.get('user_id'):    
+        rentals = Rentals.all()
+        return render_template("librarian/viewRentals.html", rentals=rentals) 
 
 @app.route('/librarian/rentals/setcomplete/<user_id>-<book_id>', methods=["GET", "POST"])
 def librarian_set_complete(user_id, book_id):
-    stat = Rentals.update_rental_status(book_id, user_id, 'True')
-    rentals = Rentals.all()
-    if not stat:
-        return f"Rental record for User ID {user_id} and Book ID {book_id} not found."
-    return render_template("librarian/viewRentals.html", rentals=rentals)
+    if session.get('user_id'):
+        stat = Rentals.update_rental_status(book_id, user_id, 'True')
+        rentals = Rentals.all()
+        if not stat:
+            return f"Rental record for User ID {user_id} and Book ID {book_id} not found."
+        return render_template("librarian/viewRentals.html", rentals=rentals)
 
 
 @app.route('/librarian/rentals/addRental', methods=["GET", "POST"])
 def librarian_add_rental():
-    if request.method == "POST":
-        book_id = request.form.get('book_id')
-        user_id = request.form.get('user_id')
-        rental_date = request.form.get('rental_date')
-        for_how_long = request.form.get('for_how_long')
-        Rentals.add({
-            'book_id': book_id,
-            'user_id': user_id,
-            'rental_date': rental_date,
-            'estimated_return_date': for_how_long,
-            'return_status': 'False'
-        })
-        
-        return render_template("librarian/rentals.html", rentals=Rentals.all())
-    else:
-        books = [book['book_id'] for book in Book.all()]
-        users = [user['user_id'] for user in User.all() if user['role'] == 'Student']
-        return render_template('librarian/addRental.html', books=books, users=users) 
+    if session.get('user_id'):
+        if request.method == "POST":
+            book_id = request.form.get('book_id')
+            user_id = request.form.get('user_id')
+            rental_date = request.form.get('rental_date')
+            for_how_long = request.form.get('for_how_long')
+            Rentals.add({
+                'book_id': book_id,
+                'user_id': user_id,
+                'rental_date': rental_date,
+                'estimated_return_date': for_how_long,
+                'return_status': 'False'
+            })
+            
+            return render_template("librarian/rentals.html", rentals=Rentals.all())
+        else:
+            books = [book['book_id'] for book in Book.all()]
+            users = [user['user_id'] for user in User.all() if user['role'] == 'Student']
+            return render_template('librarian/addRental.html', books=books, users=users) 
 
 @app.route('/librarian/users/adduser', methods=["GET", "POST"])
 def librarian_add_user():
-    if request.method == "POST":
-        user_id = request.form.get('user_id')
-        user_name = request.form.get('user_name')
-        email = request.form.get('email')
-        password = request.form.get('password')
-        role = request.form.get('role')
-        User.add({
-            'user_id': user_id,
-            'name': user_name,
-            'email': email,
-            'password': password,
-            'role': role
-        })
+    if session.get('user_id'):
+        if request.method == "POST":
+            user_id = request.form.get('user_id')
+            user_name = request.form.get('user_name')
+            email = request.form.get('email')
+            password = request.form.get('password')
+            role = request.form.get('role')
+            User.add({
+                'user_id': user_id,
+                'name': user_name,
+                'email': email,
+                'password': password,
+                'role': role
+            })
 
-        users = User.all()
-        per_page = 2
-        page = int(request.args.get('page', 1))
-        users, total_pages = paginate_items(users, page, per_page)
-        return render_template("librarian/users.html", users=users, page=page, total_pages=total_pages)
-    else:
-        return render_template("librarian/adduser.html")
-        
-@app.route('/librarian/users/removeuser', methods=["GET", "POST"])
-def librarian_remove_user():
-    if request.method == "POST":
-        user_id = request.form.get('user_id')
-        user = User.get(user_id)
-        if user:
-            User.remove(user)
             users = User.all()
-            per_page = 10
+            per_page = 2
             page = int(request.args.get('page', 1))
             users, total_pages = paginate_items(users, page, per_page)
             return render_template("librarian/users.html", users=users, page=page, total_pages=total_pages)
-        return f"User with ID {user_id} not found."
-    else:
-        users = User.all()
-        return render_template("librarian/removeuser.html", users=users)
+        else:
+            return render_template("librarian/adduser.html")
+        
+@app.route('/librarian/users/removeuser', methods=["GET", "POST"])
+def librarian_remove_user():
+    if session.get('user_id'):
+        if request.method == "POST":
+            user_id = request.form.get('user_id')
+            user = User.get(user_id)
+            if user:
+                User.remove(user)
+                users = User.all()
+                per_page = 10
+                page = int(request.args.get('page', 1))
+                users, total_pages = paginate_items(users, page, per_page)
+                return render_template("librarian/users.html", users=users, page=page, total_pages=total_pages)
+            return f"User with ID {user_id} not found."
+        else:
+            users = User.all()
+            return render_template("librarian/removeuser.html", users=users)
 
 
 @app.route('/user/book/rent/<user_id>-<book_id>', methods=["GET", "POST"])
@@ -197,18 +217,48 @@ def user_rent(user_id, book_id):
     if request.method == "POST":
         rental_date = request.form.get('rental_date')
         for_how_long = request.form.get('for_how_long')
-        stat = Rentals.add({
+        Rentals.add({
                 'book_id': book_id,
                 'user_id': user_id,
                 'rental_date': rental_date,
                 'estimated_return_date': for_how_long,
                 'return_status': 'Created'
             })
-        user = User.get_by_user_id(user_id)
-        print(user_id, book_id, stat)
-        if not stat:
-            return None
+      
+        user = User.get(user_id)
+        books = Book.all()
+        per_page = 10
+        page = int(request.args.get('page', 1))
+        books, total_pages = paginate_items(books, page, per_page)
+        return render_template("student/dashboard.html", name=user.get('name'), books=books, user=user, page=page, total_pages=total_pages)
+
+
+
     return render_template("student/rent.html", book_id=book_id, user_id=user_id)
+
+@app.route('/librarian/logout', methods=["GET", "POST"])
+
+def librarian_logoutpop():
+    del(session['user_id'])
+    return redirect(url_for('landing_page'))
+
+@app.route('/librarian/logout-popup', methods=["GET", "POST"])
+
+def librarian_logout():
+    return render_template("librarian/logout.html")
+
+
+
+@app.route('/user/logout', methods=["GET", "POST"])
+
+def user_logoutpop():
+    del(session['user_id'])
+    return redirect(url_for('landing_page'))
+
+@app.route('/user/logout-popup', methods=["GET", "POST"])
+
+def user_logout():
+    return render_template("student/logout.html")
 
 app.run(debug=True, host='0.0.0.0')
 
