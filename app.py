@@ -128,22 +128,25 @@ def librarian_remove_book():
 def librarian_rentals():  
     if session.get('user_id'):  
         rentals = Rentals.all()
-        return render_template("librarian/rentals.html", rentals=rentals)
+        user = User.get(session.get('user_id'))
+        return render_template("librarian/rentals.html", rentals=rentals, user=user)
 
 @app.route('/librarian/rentals/viewRentals', methods=["GET", "POST"])
 def librarian_view_rentals():
     if session.get('user_id'):    
         rentals = Rentals.all()
-        return render_template("librarian/viewRentals.html", rentals=rentals) 
+        user = User.get(session.get('user_id'))
+        return render_template("librarian/viewRentals.html", rentals=rentals, user=user)
 
 @app.route('/librarian/rentals/setcomplete/<user_id>-<book_id>', methods=["GET", "POST"])
 def librarian_set_complete(user_id, book_id):
     if session.get('user_id'):
         stat = Rentals.update_rental_status(book_id, user_id, 'True')
         rentals = Rentals.all()
+        user = User.get(session.get('user_id'))
         if not stat:
             return f"Rental record for User ID {user_id} and Book ID {book_id} not found."
-        return render_template("librarian/viewRentals.html", rentals=rentals)
+        return render_template("librarian/viewRentals.html", rentals=rentals, user=user)
 
 
 @app.route('/librarian/rentals/addRental', methods=["GET", "POST"])
@@ -161,8 +164,9 @@ def librarian_add_rental():
                 'estimated_return_date': for_how_long,
                 'return_status': 'False'
             })
+            user = User.get(session.get('user_id'))
             
-            return render_template("librarian/rentals.html", rentals=Rentals.all())
+            return render_template("librarian/rentals.html", rentals=Rentals.all(), user=user)
         else:
             books = [book['book_id'] for book in Book.all()]
             users = [user['user_id'] for user in User.all() if user['role'] == 'Student']
@@ -259,6 +263,16 @@ def user_logoutpop():
 
 def user_logout():
     return render_template("student/logout.html")
+
+
+
+@app.route('/librarian/books/requests', methods=["GET", "POST"])
+
+def manage_requests():
+    if session.get('user_id'):
+        user = User.get(session.get('user_id'))
+        rentals = [r for r in Rentals.all() if r.get('return_status') == "Created"]
+    return render_template("librarian/requests.html", user=user, rentals=rentals)
 
 app.run(debug=True, host='0.0.0.0')
 

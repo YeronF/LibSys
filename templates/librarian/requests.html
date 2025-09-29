@@ -3,14 +3,32 @@
 <table>
     <thead>
         <tr>
-            <th> User Name </th>
             <th> Book ID </th>
+            <th> User ID </th>
+            <th> Rental Date </th>
+            <th> Estimated Return Date </th>
         </tr>
     </thead>
     <tbody>
-        <tr> {{ user.name }} </tr>
-        <tr> {{ book.book_id }} </tr>
+        {% for rental in rentals %}
+        <tr>
+            <td> {{ rental.book_id }} </td>
+            <td> {{ rental.user_id }} </td>
+            <td> {{ rental.rental_date }} </td>
+            <td> {{ rental.estimated_return_date }}</td>
+            <td>
+                <form action="/librarian/requests/accept/{{ rental.user_id }}-{{ rental.book_id }}" method="post">
+                    <button type="submit">Accept</button>
+                </form>
+                <form action="/librarian/requests/reject/{{ rental.user_id }}-{{ rental.book_id }}" method="post">
+                    <button type="submit">Reject</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
     </tbody>
+
+
 </table>
 
 {% endblock %}
