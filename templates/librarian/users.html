@@ -19,16 +19,18 @@
             {% endfor %}
         </tbody>
     </table>
-    <div class="right-column">
+    <div class="right-column" style="margin-left: 55%; ">
         <button onclick="location.href='/librarian/users/adduser'" , class="button20">Add User</button>
         <button onclick="location.href='/librarian/users/removeuser'" , class="button21">Remove User</button>
     </div>
+</div>
 
-    <div class="pagination">
-        {% if page > 1 %}
-        <a href="{{ url_for('librarian_users', page=page-1) }}">&laquo; Previous</a> {% endif %}
-        <span>Page {{ page }} of {{ total_pages }}</span> {% if page
-        < total_pages %} <a href="{{ url_for('librarian_users', page=page+1) }}">Next &raquo;</a>
-            {% endif %}
-    </div>
-    {% endblock %}
+
+<div class="pagination">
+    {% if page > 1 %}
+    <a href="{{ url_for('librarian_users', page=page-1) }}">&laquo; Previous</a> {% endif %}
+    <span>Page {{ page }} of {{ total_pages }}</span> {% if page
+    < total_pages %} <a href="{{ url_for('librarian_users', page=page+1) }}">Next &raquo;</a>
+        {% endif %}
+</div>
+{% endblock %}

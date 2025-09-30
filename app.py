@@ -209,7 +209,8 @@ def librarian_remove_user():
                 per_page = 10
                 page = int(request.args.get('page', 1))
                 users, total_pages = paginate_items(users, page, per_page)
-                return render_template("librarian/users.html", users=users, page=page, total_pages=total_pages)
+                
+                return render_template("librarian/users.html", users=users, page=page, total_pages=total_pages, role=user.get('role'))
             return f"User with ID {user_id} not found."
         else:
             users = User.all()
@@ -272,7 +273,24 @@ def manage_requests():
     if session.get('user_id'):
         user = User.get(session.get('user_id'))
         rentals = [r for r in Rentals.all() if r.get('return_status') == "Created"]
-    return render_template("librarian/requests.html", user=user, rentals=rentals)
+    return render_template("librarian/requests.html", user=user, rentals=rentals, role ='Teacher')
+
+
+@app.route('/librarian/requests/accept/<user_id>-<book_id>', methods=["GET", "POST"])
+
+def accepted(user_id, book_id):
+    if session.get('user_id'):
+        user = User.get(session.get('user_id'))
+        Rentals.update_rental_status(book_id, user_id, 'Approved')
+        return render_template("librarian/requests.html", user=user)
+    
+@app.route('/librarian/requests/reject/<user_id>-<book_id>', methods=["GET", "POST"])
+
+def rejected(user_id, book_id):
+    if session.get('user_id'):
+        user = User.get(session.get('user_id'))
+        Rentals.update_rental_status(book_id, user_id, 'Rejected')
+        return render_template("librarian/requests.html", user=user)
 
 app.run(debug=True, host='0.0.0.0')
 
