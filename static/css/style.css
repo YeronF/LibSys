@@ -500,7 +500,7 @@ header {
 
 .button20,
 .button21 {
-    display: block;
+    display: flex;
     width: 400px;
     margin: 12px 6px;
     box-sizing: border-box;
@@ -512,18 +512,6 @@ header {
     background: linear-gradient(90deg, var(--primary-blue), var(--accent-teal));
     color: #fff;
     font-size: 1.2rem;
-}
-
-.right-column {
-    position: absolute;
-    right: 15.5%;
-    top: 45%;
-    transform: translateY(-50%);
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    align-items: center;
-    z-index: 20;
 }
 
 .g1 {
@@ -716,6 +704,7 @@ th:hover {
     color: white;
     text-decoration: none;
     font-size: 17px;
+    gap: 40px
 }
 
 
@@ -740,4 +729,35 @@ th:hover {
         float: none;
         display: block;
     }
+}
+
+.page {
+    display: flex;
+    min-height: 100vh;
+}
+
+.table-container {
+    width: 50%;
+    background: #f0f0f000;
+    padding: 1rem;
+    height: fit-content;
+}
+
+.right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1%;
+    padding: 0.50rem;
+    min-width: 150px;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: center;
+    position: relative;
+    left: 50%;
+    text-align: center;
 }

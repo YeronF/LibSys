@@ -21,13 +21,13 @@
                 <td> {{ rental.user_id }} </td>
                 <td> {{ rental.rental_date }} </td>
                 <td> {{ rental.estimated_return_date }}</td>
-                <td> {% if rental.return_status == 'False' %}
-                    <return_status style="color: #ff0000;">False</return_status>
+                <td> {% if rental.return_status == 'Borrowed' %}
+                    <return_status style="color: #ff0000;">Borrowed</return_status>
                     <form action="/librarian/rentals/setcomplete/{{ rental.user_id }}-{{ rental.book_id }}" method="post">
                         <button type="submit">Set as Complete</button>
                     </form>
-                    {% endif %} {% if rental.return_status == 'True' %}
-                    <return_status style="color: #24c416;">True</return_status>
+                    {% endif %} {% if rental.return_status == 'Returned' %}
+                    <return_status style="color: #24c416;">Returned</return_status>
                     {% endif %}</td>
             </tr>
             {% endfor %}
@@ -39,11 +39,13 @@
     {% else %}
     <p>No rentals found.</p>
     {% endif %}
-    <form action="/librarian/rentals" method="get">
-        <div class="right-column">
-            <button type="submit" , class="btn1">Back to Rentals</button>
-        </div>
-    </form>
+    <div class="pagination">
+        {% if page > 1 %}
+        <a href="{{ url_for('librarian_view_rentals', page=page-1) }}">&laquo; Previous</a> {% endif %}
+        <span>Page {{ page }} of {{ total_pages }}</span> {% if page
+        < total_pages %} <a href="{{ url_for('librarian_view_rentals', page=page+1) }}">Next &raquo;</a>
+            {% endif %}
+    </div>
 </body>
 
 </html>

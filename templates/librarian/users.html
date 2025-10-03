@@ -1,36 +1,40 @@
 {% extends "dashbase.html" %} {% block content %}
-<div class="table-container">
-    <h2>Registered Users</h2>
-    <table>
-        <thead>
-            <tr>
-                <th> User ID </th>
-                <th> User Name </th>
-                <th> Email </th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for user in users %}
-            <tr>
-                <td> {{ user.user_id }} </td>
-                <td> {{ user.name }} </td>
-                <td> {{ user.email }} </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <div class="right-column" style="margin-left: 55%; ">
-        <button onclick="location.href='/librarian/users/adduser'" , class="button20">Add User</button>
-        <button onclick="location.href='/librarian/users/removeuser'" , class="button21">Remove User</button>
+<div class="page">
+    <div class="table-container">
+        <h2>Registered Users</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th> User ID </th>
+                    <th> User Name </th>
+                    <th> Email </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td> {{ user.user_id }} </td>
+                    <td> {{ user.name }} </td>
+                    <td> {{ user.email }} </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="pagination">
+            {% if page > 1 %}
+            <a href="{{ url_for('librarian_users', page=page-1) }}">&laquo; Previous</a> {% endif %}
+            <span>Page {{ page }} of {{ total_pages }}</span> {% if page
+            < total_pages %} <a href="{{ url_for('librarian_users', page=page+1) }}">Next &raquo;</a>
+                {% endif %}
+        </div>
+    </div>
+
+    <div class="right">
+        <div class="buttons">
+            <button onclick=" location.href='/librarian/users/adduser' " , class="button20">Add User</button>
+            <button onclick="location.href='/librarian/users/removeuser' " , class="button21">Remove User</button>
+        </div>
     </div>
 </div>
 
-
-<div class="pagination">
-    {% if page > 1 %}
-    <a href="{{ url_for('librarian_users', page=page-1) }}">&laquo; Previous</a> {% endif %}
-    <span>Page {{ page }} of {{ total_pages }}</span> {% if page
-    < total_pages %} <a href="{{ url_for('librarian_users', page=page+1) }}">Next &raquo;</a>
-        {% endif %}
-</div>
 {% endblock %}
