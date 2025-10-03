@@ -170,7 +170,7 @@ def librarian_set_complete(user_id, book_id):
         user = User.get(session.get('user_id'))
         if not stat:
             return f"Rental record for User ID {user_id} and Book ID {book_id} not found."
-        return render_template("librarian/viewRentals.html", rentals=rentals, user=user)
+        return render_template("librarian/viewRentals.html", rentals=rentals, user=user, role="Teacher")
 
 
 @app.route('/librarian/rentals/addRental/', methods=["GET", "POST"])
@@ -217,8 +217,7 @@ def librarian_add_user():
             per_page = 2
             page = int(request.args.get('page', 1))
             users, total_pages = paginate_items(users, page, per_page)
-            return render_template("librarian/users.html", users=users, page=page, total_pages=total_pages, role ='Teacher'
-                                   )
+            return render_template("librarian/users.html", users=users, page=page, total_pages=total_pages, role ='Teacher')
         else:
             return render_template("librarian/adduser.html")
         
@@ -260,7 +259,7 @@ def user_rent(user_id, book_id):
         per_page = 10
         page = int(request.args.get('page', 1))
         books, total_pages = paginate_items(books, page, per_page)
-        return render_template("student/dashboard.html", name=user.get('name'), books=books, user=user, page=page, total_pages=total_pages)
+        return render_template("student/dashboard.html", name=user.get('name'), books=books, user=user, page=page, total_pages=total_pages, role="Student")
 
 
 

@@ -1,22 +1,24 @@
-{% extends "dashbase.html" %} {% block content %}
+<body>
+    {% extends "dashbase.html" %} {% block content %}
 
-<head>
+    <head>
 
-    <title>Rent</title>
-</head>
+        <title>Rent</title>
+    </head>
 
-<body class="rental_list">
-    <div class="centered">
-        <form method="POST">
-            <label for="rental_date">Rental Date:</label>
-            <input type="date" id="rental_date" name="rental_date" required>
+    <div class="rental_list">
+        <div class="centered">
+            <form method="POST">
+                <label for="rental_date">Rental Date:</label>
+                <input type="date" id="rental_date" name="rental_date" required>
 
-            <label for="for_how_long">Number of Days:</label>
-            <input type="number" id="for_how_long" name="for_how_long" required>
+                <label for="for_how_long">Number of Days:</label>
+                <input type="number" id="for_how_long" name="for_how_long" required>
 
-            <button type="submit" onclick="window.location.href='/user'">Rent</button>
-        </form>
-        <button>Cancel</button>
+                <button type="submit" onclick="window.location.href='/user'">Rent</button>
+            </form>
+            <button>Cancel</button>
+        </div>
     </div>
+    {% endblock %}
 </body>
-{% endblock %}
