@@ -16,6 +16,7 @@ def landing_page():
 
 @app.route('/librarian/', methods=["GET", "POST"])
 def librarian():
+    message = ""
     if request.method == "POST":
         user_id = request.form.get('user_id')
         password = request.form.get('password')
@@ -23,51 +24,77 @@ def librarian():
         if user and user.get('password') == password and user.get('role') == 'Teacher':
             session['user_id'] = user_id
             return render_template("librarian/dashboard.html", name=user.get('name'), role ='Teacher', user=user)
-        return f"Invalid credentials"
+        else:
+            message = "Invalid Credentials"
+            return render_template("librarian/login.html", message=message)
     else:
         if session.get('user_id'):
             user = User.get(session.get('user_id'))
             if user.get('role') == "Teacher":
                 return render_template("librarian/dashboard.html", name=user.get('name'), role ='Teacher', user=user)
-        return render_template("librarian/login.html")
+        return render_template("librarian/login.html", message=message)
 
 fetch_name = lambda x: [x, ''][x==None]
 @app.route('/user/', methods=["GET", "POST"])
 def user():
+    message = ""   # start as empty string
+
     if request.method == "POST":
-        search_query = request.form.get('query', app.secret_key )
+        search_query = request.form.get('query', app.secret_key)
         books = Book.all()
         per_page = 10
         page = int(request.args.get('page', 1))
         books, total_pages = paginate_items(books, page, per_page)
         
-        if search_query == app.secret_key :
+        if search_query == app.secret_key:
             user_id = request.form.get('user_id')
             password = request.form.get('password')
             user = User.get(user_id)
             if user and user.get('password') == password and user.get('role') == 'Student':
                 session['user_id'] = user_id
-                return render_template("student/dashboard.html", name=user.get('name'), books=books, user=user, page=page, total_pages=total_pages, role ='Student')
+                return render_template("student/dashboard.html",
+                                       name=user.get('name'),
+                                       books=books,
+                                       user=user,
+                                       page=page,
+                                       total_pages=total_pages,
+                                       role='Student')
         else:
             books = [book for book in books if search_query.lower() in fetch_name(book.get('book_name', '')).lower()]
             per_page = 10
             page = int(request.args.get('page', 1))
             books, total_pages = paginate_items(books, page, per_page)
             user = User.get(session['user_id'])
-            return render_template("student/dashboard.html", name=user.get('name'), books=books, user=user, page=page, total_pages=total_pages, role ='Student')
+            return render_template("student/dashboard.html",
+                                   name=user.get('name'),
+                                   books=books,
+                                   user=user,
+                                   page=page,
+                                   total_pages=total_pages,
+                                   role='Student')
             
-        return f"Invalid credentials"
-    else:
-        search_query = request.form.get('query', app.secret_key ) 
-        search_query = [search_query, ""][search_query == app.secret_key ]
+    else:  # GET request
+        search_query = request.form.get('query', app.secret_key) 
+        search_query = [search_query, ""][search_query == app.secret_key]
         if session.get('user_id'):
             books = [book for book in Book.all() if search_query.lower() in fetch_name(book.get('book_name', '')).lower()]
             per_page = 10
             page = int(request.args.get('page', 1))
             books, total_pages = paginate_items(books, page, per_page)
             user = User.get(session['user_id'])
-            return render_template("student/dashboard.html", name=user.get('name'), books=books, user=user, page=page, total_pages=total_pages, role ='Student')
-        return render_template("student/login.html")
+            return render_template("student/dashboard.html",
+                                   name=user.get('name'),
+                                   books=books,
+                                   user=user,
+                                   page=page,
+                                   total_pages=total_pages,
+                                   role='Student')
+        # if GET and no session -> just show login without error
+        return render_template("student/login.html", message="")  
+
+    # if POST but login failed
+    message = "Invalid Credentials"
+    return render_template("student/login.html", message=message)
 
 @app.route('/librarian/users/', methods=["GET"])
 def librarian_users():
@@ -164,13 +191,44 @@ def librarian_view_rentals():
 
 @app.route('/librarian/rentals/setcomplete/<user_id>-<book_id>/', methods=["GET", "POST"])
 def librarian_set_complete(user_id, book_id):
-    if session.get('user_id'):
-        stat = Rentals.update_rental_status(book_id, user_id, 'Returned')
-        rentals = [r for r in Rentals.all() if r.get('return_status') in ['Returned', "Borrowed"]]
-        user = User.get(session.get('user_id'))
-        if not stat:
-            return f"Rental record for User ID {user_id} and Book ID {book_id} not found."
-        return render_template("librarian/viewRentals.html", rentals=rentals, user=user, role="Teacher")
+    # Ensure user is logged in
+    if not session.get('user_id'):
+        return redirect(url_for('login'))
+
+    # Get the logged-in user
+    user = User.get(session.get('user_id'))
+    if not user or user.get('role') != "Teacher":
+        return "Unauthorized", 403
+
+    # Try to update the rental record
+    stat = Rentals.update_rental_status(book_id, user_id, 'Returned')
+
+    # Rentals with only Returned or Borrowed status
+    rentals = Rentals.all() or []
+    rentals = [r for r in rentals if r.get('return_status') in ['Returned', "Borrowed"]]
+
+    # Pagination
+    per_page = 10
+    page = int(request.args.get('page', 1))
+    rentals, total_pages = paginate_items(rentals, page, per_page)
+
+    # If rental not found, render template with error
+    if not stat:
+        return render_template("librarian/viewRentals.html",
+                               rentals=rentals,
+                               user=user,
+                               role="Teacher",
+                               page=page,
+                               total_pages=total_pages,
+                               error=f"Rental record for User ID {user_id} and Book ID {book_id} not found.")
+
+    # Otherwise render normally
+    return render_template("librarian/viewRentals.html",
+                           rentals=rentals,
+                           user=user,
+                           role="Teacher",
+                           page=page,
+                           total_pages=total_pages)
 
 
 @app.route('/librarian/rentals/addRental/', methods=["GET", "POST"])
@@ -305,7 +363,7 @@ def manage_requests():
 def accepted(user_id, book_id):
     if session.get('user_id'):
         user = User.get(session.get('user_id'))
-        Rentals.update_rental_status(book_id, user_id, 'Approved')
+        Rentals.add()
         return render_template("librarian/requests.html", user=user, role ='Teacher')
     
 @app.route('/librarian/requests/reject/<user_id>-<book_id>/', methods=["GET", "POST"])
